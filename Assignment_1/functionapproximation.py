@@ -80,24 +80,23 @@ valid_dataloader = DataLoader(TensorDataset(X_valid.unsqueeze(1), y_valid.unsque
 test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze(1)), batch_size=BATCH_SIZE,
                             pin_memory=True, shuffle=True)
 
+print("BATCH SIZE =", BATCH_SIZE)
 # training loop
 train_loss_list = list()
 val_loss_list = list()
 for lr in LR:
     for neur in NEURONS:
+        model = MLFFNN(neur).to(device)
+        optimizer = optim.SGD(model.parameters(), lr=lr)
+        criterion = nn.MSELoss(reduction="mean")
         for epoch in range(MAX_EPOCH):
-            model = MLFFNN(neur).to(device)
-            optimizer = optim.SGD(model.parameters(), lr=lr)
-            criterion = nn.MSELoss(reduction="mean")
-            #print("epoch %d / %d" % (epoch+1, MAX_EPOCH))
             model.train()
             # training loop
             for X_train, y_train in train_dataloader:
                 X_train = X_train.type(torch.float32).to(device)
                 y_train = y_train.type(torch.float32).to(device)
-
+                # Setting all the gradients to zero at the beginning of each training iteration
                 optimizer.zero_grad()
-
                 score = model(X_train)
                 y_train = y_train.unsqueeze(1)
                 loss = criterion(input=score, target=y_train)
@@ -106,6 +105,7 @@ for lr in LR:
 
             # Validation
             temp_loss_list = list()
+            model.eval()
             for X_valid, y_valid in valid_dataloader:
                 X_valid = X_valid.type(torch.float32).to(device)
                 y_valid = y_valid.type(torch.float32).to(device)
@@ -118,9 +118,6 @@ for lr in LR:
             
             train_loss_list.append(np.average(temp_loss_list))
 
-
-            #print("\tval loss: %.5f" % train_loss_list[-1])
-            #print()
         print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
 
 """Batch size = 64"""
@@ -140,23 +137,22 @@ test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze
                             pin_memory=True, shuffle=True)
 
 # training loop
+print("BATCH SIZE =", BATCH_SIZE)
 train_loss_list = list()
 val_loss_list = list()
 for lr in LR:
     for neur in NEURONS:
+        model = MLFFNN(neur).to(device)
+        optimizer = optim.SGD(model.parameters(), lr=lr)
+        criterion = nn.MSELoss(reduction="mean")
         for epoch in range(MAX_EPOCH):
-            model = MLFFNN(neur).to(device)
-            optimizer = optim.SGD(model.parameters(), lr=lr)
-            criterion = nn.MSELoss(reduction="mean")
-            #print("epoch %d / %d" % (epoch+1, MAX_EPOCH))
             model.train()
             # training loop
             for X_train, y_train in train_dataloader:
                 X_train = X_train.type(torch.float32).to(device)
                 y_train = y_train.type(torch.float32).to(device)
-
+                # Setting all the gradients to zero at the beginning of each training iteration
                 optimizer.zero_grad()
-
                 score = model(X_train)
                 y_train = y_train.unsqueeze(1)
                 loss = criterion(input=score, target=y_train)
@@ -177,9 +173,6 @@ for lr in LR:
             
             train_loss_list.append(np.average(temp_loss_list))
 
-
-            #print("\tval loss: %.5f" % train_loss_list[-1])
-            #print()
         print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
 
 """Batch size=32"""
@@ -201,21 +194,19 @@ test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze
 # training loop
 train_loss_list = list()
 val_loss_list = list()
+print("BATCH SIZE =", BATCH_SIZE)
 for lr in LR:
     for neur in NEURONS:
+        model = MLFFNN(neur).to(device)
+        optimizer = optim.SGD(model.parameters(), lr=lr)
+        criterion = nn.MSELoss(reduction="mean")
         for epoch in range(MAX_EPOCH):
-            model = MLFFNN(neur).to(device)
-            optimizer = optim.SGD(model.parameters(), lr=lr)
-            criterion = nn.MSELoss(reduction="mean")
-            #print("epoch %d / %d" % (epoch+1, MAX_EPOCH))
             model.train()
             # training loop
             for X_train, y_train in train_dataloader:
                 X_train = X_train.type(torch.float32).to(device)
                 y_train = y_train.type(torch.float32).to(device)
-
                 optimizer.zero_grad()
-
                 score = model(X_train)
                 y_train = y_train.unsqueeze(1)
                 loss = criterion(input=score, target=y_train)
@@ -223,6 +214,7 @@ for lr in LR:
                 optimizer.step()
 
             # Validation
+            model.eval()
             temp_loss_list = list()
             for X_valid, y_valid in valid_dataloader:
                 X_valid = X_valid.type(torch.float32).to(device)
@@ -257,24 +249,22 @@ valid_dataloader = DataLoader(TensorDataset(X_valid.unsqueeze(1), y_valid.unsque
 test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze(1)), batch_size=BATCH_SIZE,
                             pin_memory=True, shuffle=True)
 
+print("BATCH SIZE =", BATCH_SIZE)
 # training loop
 train_loss_list = list()
 val_loss_list = list()
 for lr in LR:
     for neur in NEURONS:
+        model = MLFFNN(neur).to(device)
+        optimizer = optim.SGD(model.parameters(), lr=lr)
+        criterion = nn.MSELoss(reduction="mean")
         for epoch in range(MAX_EPOCH):
-            model = MLFFNN(neur).to(device)
-            optimizer = optim.SGD(model.parameters(), lr=lr)
-            criterion = nn.MSELoss(reduction="mean")
-            #print("epoch %d / %d" % (epoch+1, MAX_EPOCH))
             model.train()
             # training loop
             for X_train, y_train in train_dataloader:
                 X_train = X_train.type(torch.float32).to(device)
                 y_train = y_train.type(torch.float32).to(device)
-
                 optimizer.zero_grad()
-
                 score = model(X_train)
                 y_train = y_train.unsqueeze(1)
                 loss = criterion(input=score, target=y_train)
@@ -282,6 +272,7 @@ for lr in LR:
                 optimizer.step()
 
             # Validation
+            model.eval()
             temp_loss_list = list()
             for X_valid, y_valid in valid_dataloader:
                 X_valid = X_valid.type(torch.float32).to(device)
@@ -295,13 +286,10 @@ for lr in LR:
             
             train_loss_list.append(np.average(temp_loss_list))
 
-
-            #print("\tval loss: %.5f" % train_loss_list[-1])
-            #print()
         print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
 
 BATCH_SIZE = 16
-MAX_EPOCH = 1500
+MAX_EPOCH = 2000
 
 # In the first step we will split the data in training and remaining dataset
 X_train, X_rem, y_train, y_rem = train_test_split(X,y, train_size=0.7)
@@ -316,9 +304,7 @@ test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze
                             pin_memory=True, shuffle=True)
 
 
-""" Using the best parameters obtained for the final model"""
-
-model = MLFFNN(100).to(device)
+model = MLFFNN(512).to(device)
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 criterion = nn.MSELoss(reduction="mean")
 train_loss_list = list()
@@ -326,17 +312,14 @@ train_loss_list = list()
 for epoch in range(MAX_EPOCH):
     y_out_epoch = list()
     x_epoch = list()
-    #print("epoch %d / %d" % (epoch+1, MAX_EPOCH))
-    model.train()
-    
+
+    model.train() 
     # training loop
     temp_loss_list = list()
     for X_train, y_train in train_dataloader:
         X_train = X_train.type(torch.float32).to(device)
         y_train = y_train.type(torch.float32).to(device)
-
         optimizer.zero_grad()
-
         score = model(X_train)
         y_train = y_train.unsqueeze(1)
         y_out_epoch.append(score.detach().cpu().numpy().tolist()[0][0][0])
@@ -349,6 +332,7 @@ for epoch in range(MAX_EPOCH):
     train_loss_list.append(np.average(temp_loss_list))
 
     # Validation
+    model.eval()
     temp_loss_list = list()
     for X_valid, y_valid in valid_dataloader:
         X_valid = X_valid.type(torch.float32).to(device)
@@ -365,7 +349,7 @@ for epoch in range(MAX_EPOCH):
     temp_loss_list.append(np.average(temp_loss_list))
 
     # Plot approximate 3D surface Plot
-    if epoch==0 or epoch==1 or epoch==9 or epoch==49 or epoch==499 or epoch==999 or epoch==1499:
+    if epoch==0 or epoch==1 or epoch==9 or epoch==49 or epoch==499 or epoch==999 or epoch==1499 or epoch==1999:
         for X_test, y_test in test_dataloader:
             X_test = X_test.type(torch.float32).to(device)
             y_test = y_test.type(torch.float32).to(device)
@@ -389,6 +373,7 @@ for epoch in range(MAX_EPOCH):
         # show plot
         plt.show()
 
+    # Printing the Validation set loss every 100 epochs
     if epoch%100 == 0:
         print("\tValidation average loss at epoch {0}: {1}".format(epoch, temp_loss_list[-1]))
 
@@ -416,7 +401,7 @@ for X_test, y_test in test_dataloader:
     temp_loss_list.append(loss.detach().cpu().numpy())
     
 temp_loss_list.append(np.average(temp_loss_list))
-print("Train average loss: %.5f" % train_loss_list[-1])
+print("Train average loss: %.5f" %train_loss_list[-1])
 print("Test average loss: %.5f" %temp_loss_list[-1])
 
 # Scatter plot on evaluated model for training data set
