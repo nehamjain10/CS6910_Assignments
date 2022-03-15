@@ -1,0 +1,240 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.7.16)  15 MAR 2022 23:40
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**/home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.tex
+(/home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.tex
+LaTeX2e <2020-02-02> patch level 2
+L3 programming layer <2020-02-14> (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
+)
+\c@part=\count167
+\c@section=\count168
+\c@subsection=\count169
+\c@subsubsection=\count170
+\c@paragraph=\count171
+\c@subparagraph=\count172
+\c@figure=\count173
+\c@table=\count174
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen134
+) (/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks14
+\inpenc@posthook=\toks15
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks16
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen135
+\Gin@req@width=\dimen136
+) (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/01/03 v3.4h Customizing captions (AR)
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
+\captionmargin=\dimen137
+\captionmargin@=\dimen138
+\captionwidth=\dimen139
+\caption@tempdima=\dimen140
+\caption@indent=\dimen141
+\caption@parindent=\dimen142
+\caption@hangindent=\dimen143
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count175
+\c@continuedfloat=\count176
+) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
+\l__kernel_color_stack_int=\count177
+\l__pdf_internal_box=\box45
+) (/home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.aux)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+ (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count178
+\scratchdimen=\dimen144
+\scratchbox=\box46
+\nofMPsegments=\count179
+\nofMParguments=\count180
+\everyMPshowfont=\toks17
+\MPscratchCnt=\count181
+\MPscratchDim=\dimen145
+\MPnumerator=\count182
+\makeMPintoPDFobject=\count183
+\everyMPtoPDFconversion=\toks18
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 12.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 12.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 12.
+
+Overfull \hbox (65.93625pt too wide) in paragraph at lines 12--12
+ [][] 
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 18.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 18.
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--34
+
+ []
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+<q1_figs/ActualFunc.png, id=11, 433.62pt x 296.60812pt>
+File: q1_figs/ActualFunc.png Graphic file (type png)
+<use q1_figs/ActualFunc.png>
+Package pdftex.def Info: q1_figs/ActualFunc.png  used on input line 39.
+(pdftex.def)             Requested size: 276.00105pt x 188.80116pt.
+<q1_figs/Ep1.png, id=13, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep1.png Graphic file (type png)
+<use q1_figs/Ep1.png>
+Package pdftex.def Info: q1_figs/Ep1.png  used on input line 47.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+<q1_figs/Ep2.png, id=14, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep2.png Graphic file (type png)
+<use q1_figs/Ep2.png>
+Package pdftex.def Info: q1_figs/Ep2.png  used on input line 53.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+<q1_figs/Ep10.png, id=15, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep10.png Graphic file (type png)
+<use q1_figs/Ep10.png>
+Package pdftex.def Info: q1_figs/Ep10.png  used on input line 59.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+<q1_figs/Ep50.png, id=16, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep50.png Graphic file (type png)
+<use q1_figs/Ep50.png>
+Package pdftex.def Info: q1_figs/Ep50.png  used on input line 65.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+<q1_figs/Ep500.png, id=17, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep500.png Graphic file (type png)
+<use q1_figs/Ep500.png>
+Package pdftex.def Info: q1_figs/Ep500.png  used on input line 71.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+<q1_figs/Ep1000.png, id=18, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep1000.png Graphic file (type png)
+<use q1_figs/Ep1000.png>
+Package pdftex.def Info: q1_figs/Ep1000.png  used on input line 77.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+<q1_figs/Ep1500.png, id=19, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep1500.png Graphic file (type png)
+<use q1_figs/Ep1500.png>
+Package pdftex.def Info: q1_figs/Ep1500.png  used on input line 83.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+<q1_figs/Ep2000.png, id=20, 687.56876pt x 464.73625pt>
+File: q1_figs/Ep2000.png Graphic file (type png)
+<use q1_figs/Ep2000.png>
+Package pdftex.def Info: q1_figs/Ep2000.png  used on input line 89.
+(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+ [2 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/ActualFunc.png>] [3 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep1.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep2.png>] [4 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep10.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep50.png>] [5 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep500.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep1000.png>] [6 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep1500.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep2000.png>]
+<q1_figs/errvsep.png, id=45, 388.45125pt x 271.0125pt>
+File: q1_figs/errvsep.png Graphic file (type png)
+<use q1_figs/errvsep.png>
+Package pdftex.def Info: q1_figs/errvsep.png  used on input line 104.
+(pdftex.def)             Requested size: 276.00105pt x 192.56494pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--111
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--111
+
+ []
+
+<q1_figs/Scatt.png, id=46, 388.45125pt x 255.95625pt>
+File: q1_figs/Scatt.png Graphic file (type png)
+<use q1_figs/Scatt.png>
+Package pdftex.def Info: q1_figs/Scatt.png  used on input line 114.
+(pdftex.def)             Requested size: 276.00105pt x 181.8669pt.
+[7 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/errvsep.png>] [8 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Scatt.png>] [9] (/home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.aux) ) 
+Here is how much of TeX's memory you used:
+ 2358 strings out of 483183
+ 39234 string characters out of 5966292
+ 268034 words of memory out of 5000000
+ 17389 multiletter control sequences out of 15000+600000
+ 536620 words of font info for 38 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 41i,6n,42p,357b,297s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/neham/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on /home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.pdf (9 pages, 4100564 bytes).
+PDF statistics:
+ 82 PDF objects out of 1000 (max. 8388607)
+ 42 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+

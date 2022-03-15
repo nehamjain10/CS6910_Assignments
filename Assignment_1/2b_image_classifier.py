@@ -197,57 +197,58 @@ def train_model(optimizer,model,model_type="model_delta"):
     
 hidden_dim_1 = [8,16,32,64]  
 hidden_dim_2 = [8,16,32,64]
-lrs = [1e-5,1e-4, 1e-3, 1e-2]
-
+lrs = [1e-5,1e-4,1e-3, 1e-2]
+momentums = [0.9,0.8,0.7]
 delta_loss = []
 ada_delta_loss = []
 adam_loss = []
 
 
-f = open("validation_results.csv", "a")
+f = open("validation_results.csv", "w")
 csvwriter = csv.writer(f)
 
-for hid_dim1 in hidden_dim_1:
-    for hid_dim2 in hidden_dim_2:
-        for lr in lrs:
-            
-            model_delta = MLFFNN(hid_dim1,hid_dim2).to(device)
-            model_ada_delta = MLFFNN(hid_dim1,hid_dim2).to(device)
-            model_adam = MLFFNN(hid_dim1,hid_dim2).to(device)
-            
-            optimizer_delta = optim.SGD(model_delta.parameters(), lr=lr, momentum=0)
-            optimizer_ada_delta = optim.SGD(model_ada_delta.parameters(),lr=lr,momentum=.8)
-            optimizer_adam = optim.Adam(model_adam.parameters(), lr=lr)
+for momentum in momentums:
+    for hid_dim1 in hidden_dim_1:
+        for hid_dim2 in hidden_dim_2:
+            for lr in lrs:
+                
+                model_delta = MLFFNN(hid_dim1,hid_dim2).to(device)
+                model_ada_delta = MLFFNN(hid_dim1,hid_dim2).to(device)
+                model_adam = MLFFNN(hid_dim1,hid_dim2).to(device)
+                
+                optimizer_delta = optim.SGD(model_delta.parameters(), lr=lr, momentum=0)
+                optimizer_ada_delta = optim.SGD(model_ada_delta.parameters(),lr=lr,momentum=momentum)
+                optimizer_adam = optim.Adam(model_adam.parameters(), lr=lr)
 
-            loss_delta,acc_delta,epoch_delta = train_model(optimizer_delta, model_delta,"model_delta")
-            loss_ada_delta,acc_ada_delta,epoch_ada_delta = train_model(optimizer_ada_delta, model_ada_delta,"model_ada_delta")
-            loss_adam,acc_adam,epoch_adam = train_model(optimizer_adam, model_adam,"model_adam")
+                loss_delta,acc_delta,epoch_delta = train_model(optimizer_delta, model_delta,"model_delta")
+                loss_ada_delta,acc_ada_delta,epoch_ada_delta = train_model(optimizer_ada_delta, model_ada_delta,"model_ada_delta")
+                loss_adam,acc_adam,epoch_adam = train_model(optimizer_adam, model_adam,"model_adam")
 
-            epochs = [epoch_delta,epoch_ada_delta,epoch_adam]
-            
+                epochs = [epoch_delta,epoch_ada_delta,epoch_adam]
+                
 
-            print("\n \n Rule Delta",hid_dim1,hid_dim2,lr,loss_delta["val"][-1])
-            print("\n \n Rule Ada Delta",hid_dim1,hid_dim2,lr,loss_ada_delta["val"][-1])
-            print("\n \n Rule Adam",hid_dim1,hid_dim2,lr,loss_adam["val"][-1])
-            csvwriter.writerow(["\n \n Rule Delta",hid_dim1,hid_dim2,lr,loss_delta["val"][-1]])
-            csvwriter.writerow(["\n \n Rule Ada Delta",hid_dim1,hid_dim2,lr,loss_ada_delta["val"][-1]])
-            csvwriter.writerow(["\n \n Rule Adam",hid_dim1,hid_dim2,lr,loss_adam["val"][-1]])
+                print("\n \n Rule Delta",hid_dim1,hid_dim2,lr,loss_delta["val"][-1])
+                print("\n \n Rule Ada Delta",hid_dim1,hid_dim2,lr,loss_ada_delta["val"][-1])
+                print("\n \n Rule Adam",hid_dim1,hid_dim2,lr,loss_adam["val"][-1])
+                csvwriter.writerow(["\n \n Rule Delta",momentum,hid_dim1,hid_dim2,lr,loss_delta["val"][-1],acc_delta["val"][-1],len(loss_delta["val"])])
+                csvwriter.writerow(["\n \n Rule Ada Delta",momentum,hid_dim1,hid_dim2,lr,loss_ada_delta["val"][-1],acc_ada_delta["val"][-1],len(acc_ada_delta["val"])])
+                csvwriter.writerow(["\n \n Rule Adam",momentum,hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
 
-            """
-            plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
-            plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
-            
-            plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"train",loss_or_accuracy="accuracy")
-            plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"val",loss_or_accuracy="accuracy")
+                """
+                plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
+                plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
+                
+                plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"train",loss_or_accuracy="accuracy")
+                plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"val",loss_or_accuracy="accuracy")
 
-            plot_confusion_matrix(lr,"model_delta.pth",train_dataloader)
-            plot_confusion_matrix(lr,"model_ada_delta.pth",train_dataloader)
-            plot_confusion_matrix(lr,"model_adam.pth",train_dataloader)
+                plot_confusion_matrix(lr,"model_delta.pth",train_dataloader)
+                plot_confusion_matrix(lr,"model_ada_delta.pth",train_dataloader)
+                plot_confusion_matrix(lr,"model_adam.pth",train_dataloader)
 
-            plot_confusion_matrix(lr,"model_delta.pth",val_dataloader)
-            plot_confusion_matrix(lr,"model_ada_delta.pth",val_dataloader)
-            plot_confusion_matrix(lr,"model_adam.pth",val_dataloader)
-            """
+                plot_confusion_matrix(lr,"model_delta.pth",test_dataloader)
+                plot_confusion_matrix(lr,"model_ada_delta.pth",test_dataloader)
+                plot_confusion_matrix(lr,"model_adam.pth",test_dataloader)
+                """
 
 
 
