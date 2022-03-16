@@ -29,14 +29,14 @@ class MLFFNN(nn.Module):
     """
     Class of Multi Layer Feed Forward Neural Network (MLFFNN)
     """
-    def __init__(self, hidden_dim) :
+    def __init__(self, hidden_dim1, hidden_dim2) :
         super(MLFFNN, self).__init__()
         # adding linear and non-linear hidden layers
-        self.mlffnn = nn.Sequential(nn.Linear(2, hidden_dim),
+        self.mlffnn = nn.Sequential(nn.Linear(2, hidden_dim1),
                                        nn.Tanh(),
-                                       nn.Linear(hidden_dim, hidden_dim),
+                                       nn.Linear(hidden_dim1, hidden_dim2),
                                        nn.Tanh(),
-                                       nn.Linear(hidden_dim, 1))
+                                       nn.Linear(hidden_dim2, 1))
         
     def forward(self, X):
         y = self.mlffnn(X)
@@ -60,178 +60,9 @@ ax.set_title('Actual Function Surface')
 # show plot
 plt.show()
 
-LR = [1e-6, 1e-5, 1e-4, 1e-3, 1e-2]
+LR = [1e-5, 1e-4, 1e-3, 1e-2]
 MAX_EPOCH = 2000
-NEURONS = [50, 100, 256, 512, 784, 1024, 2048]
-
-"""Batch size = 128"""
-
-BATCH_SIZE = 128
-
-# In the first step we will split the data in training and remaining dataset
-X_train, X_rem, y_train, y_rem = train_test_split(X,y, train_size=0.7)
-X_valid, X_test, y_valid, y_test = train_test_split(X_rem, y_rem, test_size=0.67)
-
-X_train, y_train, X_valid, X_test, y_valid, y_test = map(torch.tensor, [X_train, y_train, X_valid, X_test, y_valid, y_test])
-train_dataloader = DataLoader(TensorDataset(X_train.unsqueeze(1), y_train.unsqueeze(1)), batch_size=BATCH_SIZE,
-                              pin_memory=True, shuffle=True)
-valid_dataloader = DataLoader(TensorDataset(X_valid.unsqueeze(1), y_valid.unsqueeze(1)), batch_size=BATCH_SIZE,
-                            pin_memory=True, shuffle=True)
-test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze(1)), batch_size=BATCH_SIZE,
-                            pin_memory=True, shuffle=True)
-
-print("BATCH SIZE =", BATCH_SIZE)
-# training loop
-train_loss_list = list()
-val_loss_list = list()
-for lr in LR:
-    for neur in NEURONS:
-        model = MLFFNN(neur).to(device)
-        optimizer = optim.SGD(model.parameters(), lr=lr)
-        criterion = nn.MSELoss(reduction="mean")
-        for epoch in range(MAX_EPOCH):
-            model.train()
-            # training loop
-            for X_train, y_train in train_dataloader:
-                X_train = X_train.type(torch.float32).to(device)
-                y_train = y_train.type(torch.float32).to(device)
-                # Setting all the gradients to zero at the beginning of each training iteration
-                optimizer.zero_grad()
-                score = model(X_train)
-                y_train = y_train.unsqueeze(1)
-                loss = criterion(input=score, target=y_train)
-                loss.backward()
-                optimizer.step()
-
-            # Validation
-            temp_loss_list = list()
-            model.eval()
-            for X_valid, y_valid in valid_dataloader:
-                X_valid = X_valid.type(torch.float32).to(device)
-                y_valid = y_valid.type(torch.float32).to(device)
-
-                score = model(X_valid)
-                y_valid = y_valid.unsqueeze(1)
-                loss = criterion(input=score, target=y_valid)
-
-                temp_loss_list.append(loss.detach().cpu().numpy())
-            
-            train_loss_list.append(np.average(temp_loss_list))
-
-        print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
-
-"""Batch size = 64"""
-
-BATCH_SIZE = 64
-
-# In the first step we will split the data in training and remaining dataset
-X_train, X_rem, y_train, y_rem = train_test_split(X,y, train_size=0.7)
-X_valid, X_test, y_valid, y_test = train_test_split(X_rem, y_rem, test_size=0.67)
-
-X_train, y_train, X_valid, X_test, y_valid, y_test = map(torch.tensor, [X_train, y_train, X_valid, X_test, y_valid, y_test])
-train_dataloader = DataLoader(TensorDataset(X_train.unsqueeze(1), y_train.unsqueeze(1)), batch_size=BATCH_SIZE,
-                              pin_memory=True, shuffle=True)
-valid_dataloader = DataLoader(TensorDataset(X_valid.unsqueeze(1), y_valid.unsqueeze(1)), batch_size=BATCH_SIZE,
-                            pin_memory=True, shuffle=True)
-test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze(1)), batch_size=BATCH_SIZE,
-                            pin_memory=True, shuffle=True)
-
-# training loop
-print("BATCH SIZE =", BATCH_SIZE)
-train_loss_list = list()
-val_loss_list = list()
-for lr in LR:
-    for neur in NEURONS:
-        model = MLFFNN(neur).to(device)
-        optimizer = optim.SGD(model.parameters(), lr=lr)
-        criterion = nn.MSELoss(reduction="mean")
-        for epoch in range(MAX_EPOCH):
-            model.train()
-            # training loop
-            for X_train, y_train in train_dataloader:
-                X_train = X_train.type(torch.float32).to(device)
-                y_train = y_train.type(torch.float32).to(device)
-                # Setting all the gradients to zero at the beginning of each training iteration
-                optimizer.zero_grad()
-                score = model(X_train)
-                y_train = y_train.unsqueeze(1)
-                loss = criterion(input=score, target=y_train)
-                loss.backward()
-                optimizer.step()
-
-            # Validation
-            temp_loss_list = list()
-            for X_valid, y_valid in valid_dataloader:
-                X_valid = X_valid.type(torch.float32).to(device)
-                y_valid = y_valid.type(torch.float32).to(device)
-
-                score = model(X_valid)
-                y_valid = y_valid.unsqueeze(1)
-                loss = criterion(input=score, target=y_valid)
-
-                temp_loss_list.append(loss.detach().cpu().numpy())
-            
-            train_loss_list.append(np.average(temp_loss_list))
-
-        print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
-
-"""Batch size=32"""
-
-BATCH_SIZE = 32
-
-# In the first step we will split the data in training and remaining dataset
-X_train, X_rem, y_train, y_rem = train_test_split(X,y, train_size=0.7)
-X_valid, X_test, y_valid, y_test = train_test_split(X_rem, y_rem, test_size=0.67)
-
-X_train, y_train, X_valid, X_test, y_valid, y_test = map(torch.tensor, [X_train, y_train, X_valid, X_test, y_valid, y_test])
-train_dataloader = DataLoader(TensorDataset(X_train.unsqueeze(1), y_train.unsqueeze(1)), batch_size=BATCH_SIZE,
-                              pin_memory=True, shuffle=True)
-valid_dataloader = DataLoader(TensorDataset(X_valid.unsqueeze(1), y_valid.unsqueeze(1)), batch_size=BATCH_SIZE,
-                            pin_memory=True, shuffle=True)
-test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze(1)), batch_size=BATCH_SIZE,
-                            pin_memory=True, shuffle=True)
-
-# training loop
-train_loss_list = list()
-val_loss_list = list()
-print("BATCH SIZE =", BATCH_SIZE)
-for lr in LR:
-    for neur in NEURONS:
-        model = MLFFNN(neur).to(device)
-        optimizer = optim.SGD(model.parameters(), lr=lr)
-        criterion = nn.MSELoss(reduction="mean")
-        for epoch in range(MAX_EPOCH):
-            model.train()
-            # training loop
-            for X_train, y_train in train_dataloader:
-                X_train = X_train.type(torch.float32).to(device)
-                y_train = y_train.type(torch.float32).to(device)
-                optimizer.zero_grad()
-                score = model(X_train)
-                y_train = y_train.unsqueeze(1)
-                loss = criterion(input=score, target=y_train)
-                loss.backward()
-                optimizer.step()
-
-            # Validation
-            model.eval()
-            temp_loss_list = list()
-            for X_valid, y_valid in valid_dataloader:
-                X_valid = X_valid.type(torch.float32).to(device)
-                y_valid = y_valid.type(torch.float32).to(device)
-
-                score = model(X_valid)
-                y_valid = y_valid.unsqueeze(1)
-                loss = criterion(input=score, target=y_valid)
-
-                temp_loss_list.append(loss.detach().cpu().numpy())
-            
-            train_loss_list.append(np.average(temp_loss_list))
-
-
-            #print("\tval loss: %.5f" % train_loss_list[-1])
-            #print()
-        print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
+NEURONS = [50, 100, 256, 512, 784]
 
 """Batch size = 16"""
 
@@ -251,11 +82,12 @@ test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze
 
 print("BATCH SIZE =", BATCH_SIZE)
 # training loop
+
 train_loss_list = list()
 val_loss_list = list()
 for lr in LR:
     for neur in NEURONS:
-        model = MLFFNN(neur).to(device)
+        model = MLFFNN(neur, neur).to(device)
         optimizer = optim.SGD(model.parameters(), lr=lr)
         criterion = nn.MSELoss(reduction="mean")
         for epoch in range(MAX_EPOCH):
@@ -288,7 +120,62 @@ for lr in LR:
 
         print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
 
-BATCH_SIZE = 16
+"""BATCH_SIZE = 1"""
+
+BATCH_SIZE = 1
+
+# In the first step we will split the data in training and remaining dataset
+X_train, X_rem, y_train, y_rem = train_test_split(X,y, train_size=0.7)
+X_valid, X_test, y_valid, y_test = train_test_split(X_rem, y_rem, test_size=0.67)
+
+X_train, y_train, X_valid, X_test, y_valid, y_test = map(torch.tensor, [X_train, y_train, X_valid, X_test, y_valid, y_test])
+train_dataloader = DataLoader(TensorDataset(X_train.unsqueeze(1), y_train.unsqueeze(1)), batch_size=BATCH_SIZE,
+                              pin_memory=True, shuffle=True)
+valid_dataloader = DataLoader(TensorDataset(X_valid.unsqueeze(1), y_valid.unsqueeze(1)), batch_size=BATCH_SIZE,
+                            pin_memory=True, shuffle=True)
+test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze(1)), batch_size=BATCH_SIZE,
+                            pin_memory=True, shuffle=True)
+
+print("BATCH SIZE =", BATCH_SIZE)
+# training loop
+train_loss_list = list()
+val_loss_list = list()
+for lr in LR:
+    for neur in NEURONS:
+        model = MLFFNN(neur, neur).to(device)
+        optimizer = optim.SGD(model.parameters(), lr=lr)
+        criterion = nn.MSELoss(reduction="mean")
+        for epoch in range(MAX_EPOCH):
+            model.train()
+            # training loop
+            for X_train, y_train in train_dataloader:
+                X_train = X_train.type(torch.float32).to(device)
+                y_train = y_train.type(torch.float32).to(device)
+                optimizer.zero_grad()
+                score = model(X_train)
+                y_train = y_train.unsqueeze(1)
+                loss = criterion(input=score, target=y_train)
+                loss.backward()
+                optimizer.step()
+
+            # Validation
+            model.eval()
+            temp_loss_list = list()
+            for X_valid, y_valid in valid_dataloader:
+                X_valid = X_valid.type(torch.float32).to(device)
+                y_valid = y_valid.type(torch.float32).to(device)
+
+                score = model(X_valid)
+                y_valid = y_valid.unsqueeze(1)
+                loss = criterion(input=score, target=y_valid)
+
+                temp_loss_list.append(loss.detach().cpu().numpy())
+            
+            train_loss_list.append(np.average(temp_loss_list))
+
+        print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
+
+BATCH_SIZE = 1
 MAX_EPOCH = 2000
 
 # In the first step we will split the data in training and remaining dataset
@@ -304,7 +191,63 @@ test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze
                             pin_memory=True, shuffle=True)
 
 
-model = MLFFNN(512).to(device)
+train_loss_list = list()
+val_loss_list = list()
+hidden_dim_1 = [8, 16, 32, 50, 64]  
+hidden_dim_2 = [8, 16, 32, 50, 64]
+lr = 0.01
+for hid_dim1 in hidden_dim_1:
+    for hid_dim2 in hidden_dim_2:
+        model = MLFFNN(hid_dim1, hid_dim2).to(device)
+        optimizer = optim.SGD(model.parameters(), lr=lr)
+        criterion = nn.MSELoss(reduction="mean")
+        for epoch in range(MAX_EPOCH):
+            model.train()
+            # training loop
+            for X_train, y_train in train_dataloader:
+                X_train = X_train.type(torch.float32).to(device)
+                y_train = y_train.type(torch.float32).to(device)
+                optimizer.zero_grad()
+                score = model(X_train)
+                y_train = y_train.unsqueeze(1)
+                loss = criterion(input=score, target=y_train)
+                loss.backward()
+                optimizer.step()
+
+            # Validation
+            model.eval()
+            temp_loss_list = list()
+            for X_valid, y_valid in valid_dataloader:
+                X_valid = X_valid.type(torch.float32).to(device)
+                y_valid = y_valid.type(torch.float32).to(device)
+
+                score = model(X_valid)
+                y_valid = y_valid.unsqueeze(1)
+                loss = criterion(input=score, target=y_valid)
+
+                temp_loss_list.append(loss.detach().cpu().numpy())
+            
+            train_loss_list.append(np.average(temp_loss_list))
+
+        print("Learning Rate: {0}\tNo. of Neurons: {1}, {2} \tValidation loss: {3}".format(lr, hid_dim1, hid_dim2, train_loss_list[-1]))
+
+BATCH_SIZE = 1
+MAX_EPOCH = 2000
+
+# In the first step we will split the data in training and remaining dataset
+X_train, X_rem, y_train, y_rem = train_test_split(X,y, train_size=0.7)
+X_valid, X_test, y_valid, y_test = train_test_split(X_rem, y_rem, test_size=0.67)
+
+X_train, y_train, X_valid, X_test, y_valid, y_test = map(torch.tensor, [X_train, y_train, X_valid, X_test, y_valid, y_test])
+train_dataloader = DataLoader(TensorDataset(X_train.unsqueeze(1), y_train.unsqueeze(1)), batch_size=BATCH_SIZE,
+                              pin_memory=True, shuffle=True)
+valid_dataloader = DataLoader(TensorDataset(X_valid.unsqueeze(1), y_valid.unsqueeze(1)), batch_size=BATCH_SIZE,
+                            pin_memory=True, shuffle=True)
+test_dataloader = DataLoader(TensorDataset(X_test.unsqueeze(1), y_test.unsqueeze(1)), batch_size=BATCH_SIZE,
+                            pin_memory=True, shuffle=True)
+
+
+model = MLFFNN(32, 64).to(device)
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 criterion = nn.MSELoss(reduction="mean")
 train_loss_list = list()
