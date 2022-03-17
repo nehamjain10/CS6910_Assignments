@@ -62,7 +62,7 @@ plt.show()
 
 LR = [1e-5, 1e-4, 1e-3, 1e-2]
 MAX_EPOCH = 2000
-NEURONS = [50, 100, 256, 512, 784]
+NEURONS = [8, 16, 32, 50, 64, 256, 512, 784]
 
 """Batch size = 16"""
 
@@ -178,7 +178,7 @@ for lr in LR:
 
         print("Learning Rate: {0}\tNo. of Neurons: {1}\tValidation loss: {2}".format(lr, neur, train_loss_list[-1]))
 
-"""Checking best number of neurons in Hidden layers 1 and 2"""
+"""Checking best number of neurons in Hidden layers 1 and 2 when varying learning rate"""
 
 BATCH_SIZE = 1
 MAX_EPOCH = 2000
@@ -200,41 +200,41 @@ train_loss_list = list()
 val_loss_list = list()
 hidden_dim_1 = [8, 16, 32, 50, 64]  
 hidden_dim_2 = [8, 16, 32, 50, 64]
-lr = 0.01
-for hid_dim1 in hidden_dim_1:
-    for hid_dim2 in hidden_dim_2:
-        model = MLFFNN(hid_dim1, hid_dim2).to(device)
-        optimizer = optim.SGD(model.parameters(), lr=lr)
-        criterion = nn.MSELoss(reduction="mean")
-        for epoch in range(MAX_EPOCH):
-            model.train()
-            # training loop
-            for X_train, y_train in train_dataloader:
-                X_train = X_train.type(torch.float32).to(device)
-                y_train = y_train.type(torch.float32).to(device)
-                optimizer.zero_grad()
-                score = model(X_train)
-                y_train = y_train.unsqueeze(1)
-                loss = criterion(input=score, target=y_train)
-                loss.backward()
-                optimizer.step()
+for lr in LR:
+    for hid_dim1 in hidden_dim_1:
+        for hid_dim2 in hidden_dim_2:
+            model = MLFFNN(hid_dim1, hid_dim2).to(device)
+            optimizer = optim.SGD(model.parameters(), lr=lr)
+            criterion = nn.MSELoss(reduction="mean")
+            for epoch in range(MAX_EPOCH):
+                model.train()
+                # training loop
+                for X_train, y_train in train_dataloader:
+                    X_train = X_train.type(torch.float32).to(device)
+                    y_train = y_train.type(torch.float32).to(device)
+                    optimizer.zero_grad()
+                    score = model(X_train)
+                    y_train = y_train.unsqueeze(1)
+                    loss = criterion(input=score, target=y_train)
+                    loss.backward()
+                    optimizer.step()
 
-            # Validation
-            model.eval()
-            temp_loss_list = list()
-            for X_valid, y_valid in valid_dataloader:
-                X_valid = X_valid.type(torch.float32).to(device)
-                y_valid = y_valid.type(torch.float32).to(device)
+                # Validation
+                model.eval()
+                temp_loss_list = list()
+                for X_valid, y_valid in valid_dataloader:
+                    X_valid = X_valid.type(torch.float32).to(device)
+                    y_valid = y_valid.type(torch.float32).to(device)
 
-                score = model(X_valid)
-                y_valid = y_valid.unsqueeze(1)
-                loss = criterion(input=score, target=y_valid)
+                    score = model(X_valid)
+                    y_valid = y_valid.unsqueeze(1)
+                    loss = criterion(input=score, target=y_valid)
 
-                temp_loss_list.append(loss.detach().cpu().numpy())
-            
-            train_loss_list.append(np.average(temp_loss_list))
+                    temp_loss_list.append(loss.detach().cpu().numpy())
+                
+                train_loss_list.append(np.average(temp_loss_list))
 
-        print("Learning Rate: {0}\tNo. of Neurons: {1}, {2} \tValidation loss: {3}".format(lr, hid_dim1, hid_dim2, train_loss_list[-1]))
+            print("Learning Rate: {0}\tNo. of Neurons: {1}, {2} \tValidation loss: {3}".format(lr, hid_dim1, hid_dim2, train_loss_list[-1]))
 
 """Checking best LR"""
 
