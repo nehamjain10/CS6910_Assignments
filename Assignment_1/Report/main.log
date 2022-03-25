@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.7.16)  15 MAR 2022 23:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.7.16)  17 MAR 2022 22:54
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -26,12 +26,71 @@ File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
 Package: inputenc 2018/08/11 v1.3c Input encoding file
 \inpenc@prehook=\toks14
 \inpenc@posthook=\toks15
-) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+) (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
  (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks16
-) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2019/11/07 v1.0c TeX engine tests
+))
+\Gm@cnth=\count175
+\Gm@cntv=\count176
+\c@Gm@tempcnt=\count177
+\Gm@bindingoffset=\dimen135
+\Gm@wd@mp=\dimen136
+\Gm@odd@mp=\dimen137
+\Gm@even@mp=\dimen138
+\Gm@layoutwidth=\dimen139
+\Gm@layoutheight=\dimen140
+\Gm@layouthoffset=\dimen141
+\Gm@layoutvoffset=\dimen142
+\Gm@dimlist=\toks17
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count178
+\float@exts=\toks18
+\float@box=\box45
+\@float@everytoks=\toks19
+\@floatcapt=\box46
+) (/usr/share/texlive/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/01/03 v3.4h Customizing captions (AR)
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
+\captionmargin=\dimen143
+\captionmargin@=\dimen144
+\captionwidth=\dimen145
+\caption@tempdima=\dimen146
+\caption@indent=\dimen147
+\caption@parindent=\dimen148
+\caption@hangindent=\dimen149
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count179
+\c@continuedfloat=\count180
+Package caption Info: float package is loaded.
+)
+\c@KVtest=\count181
+\sf@farskip=\skip49
+\sf@captopadj=\dimen150
+\sf@capskip=\skip50
+\sf@nearskip=\skip51
+\c@subfigure=\count182
+\c@subfigure@save=\count183
+\c@lofdepth=\count184
+\c@subtable=\count185
+\c@subtable@save=\count186
+\c@lotdepth=\count187
+\sf@top=\skip52
+\sf@bottom=\skip53
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
  (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
@@ -42,113 +101,229 @@ Package graphics Info: Driver file: pdftex.def on input line 105.
  (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen135
-\Gin@req@width=\dimen136
-) (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2020/01/03 v3.4h Customizing captions (AR)
- (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 61.
-\captionmargin=\dimen137
-\captionmargin@=\dimen138
-\captionwidth=\dimen139
-\caption@tempdima=\dimen140
-\caption@indent=\dimen141
-\caption@parindent=\dimen142
-\caption@hangindent=\dimen143
-Package caption Info: Standard document class detected.
+\Gin@req@height=\dimen151
+\Gin@req@width=\dimen152
+) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen153
+\lightrulewidth=\dimen154
+\cmidrulewidth=\dimen155
+\belowrulesep=\dimen156
+\belowbottomsep=\dimen157
+\aboverulesep=\dimen158
+\abovetopsep=\dimen159
+\cmidrulesep=\dimen160
+\cmidrulekern=\dimen161
+\defaultaddspace=\dimen162
+\@cmidla=\count188
+\@cmidlb=\count189
+\@aboverulesep=\dimen163
+\@belowrulesep=\dimen164
+\@thisruleclass=\count190
+\@lastruleclass=\count191
+\@thisrulewidth=\dimen165
+) (/usr/share/texlive/texmf-dist/tex/latex/diagbox/diagbox.sty
+Package: diagbox 2020/02/09 v2.3 Making table heads with diagonal lines
+ (/usr/share/texlive/texmf-dist/tex/latex/pict2e/pict2e.sty
+Package: pict2e 2019/08/20 v0.3c Improved picture commands (HjG,RN,JT)
+ (/usr/share/texlive/texmf-dist/tex/latex/pict2e/pict2e.cfg
+File: pict2e.cfg 2016/02/05 v0.1u pict2e configuration for teTeX/TeXLive
 )
-\c@caption@flags=\count175
-\c@continuedfloat=\count176
+Package pict2e Info: Driver file: pdftex.def on input line 119.
+Package pict2e Info: Driver file for pict2e: p2e-pdftex.def on input line 121.
+ (/usr/share/texlive/texmf-dist/tex/latex/pict2e/p2e-pdftex.def
+File: p2e-pdftex.def 2016/02/05 v0.1u Driver-dependant file (RN,HjG,JT)
+)
+\pIIe@GRAPH=\toks20
+\@arclen=\dimen166
+\@arcrad=\dimen167
+\@tempdimd=\dimen168
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp.sty
+Package: fp 1995/04/02
+ `Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich (/usr/share/texlive/texmf-dist/tex/latex/fp/defpattern.sty
+Package: defpattern 1994/10/12
+\actioncount=\count192
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-basic.sty
+Package: fp-basic 1996/05/13
+\FP@xs=\count193
+\FP@xia=\count194
+\FP@xib=\count195
+\FP@xfa=\count196
+\FP@xfb=\count197
+\FP@rega=\count198
+\FP@regb=\count199
+\FP@regs=\count266
+\FP@times=\count267
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-addons.sty
+Package: fp-addons 1995/03/15
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-snap.sty
+Package: fp-snap 1995/04/05
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-exp.sty
+Package: fp-exp 1995/04/03
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-trigo.sty
+Package: fp-trigo 1995/04/14
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-pas.sty
+Package: fp-pas 1994/08/29
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-random.sty
+Package: fp-random 1995/02/23
+\FPseed=\count268
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-eqn.sty
+Package: fp-eqn 1995/04/03
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-upn.sty
+Package: fp-upn 1996/10/21
+) (/usr/share/texlive/texmf-dist/tex/latex/fp/fp-eval.sty
+Package: fp-eval 1995/04/03
+)) (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count269
+\calc@Bcount=\count270
+\calc@Adimen=\dimen169
+\calc@Bdimen=\dimen170
+\calc@Askip=\skip54
+\calc@Bskip=\skip55
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count271
+\calc@Cskip=\skip56
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
+\col@sep=\dimen171
+\ar@mcellbox=\box47
+\extrarowheight=\dimen172
+\NC@list=\toks21
+\extratabsurround=\skip57
+\backup@length=\skip58
+\ar@cellbox=\box48
+)
+\diagbox@boxa=\box49
+\diagbox@boxb=\box50
+\diagbox@boxm=\box51
+\diagbox@wd=\dimen173
+\diagbox@ht=\dimen174
+\diagbox@insepl=\dimen175
+\diagbox@insepr=\dimen176
+\diagbox@outsepl=\dimen177
+\diagbox@outsepr=\dimen178
 ) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count177
-\l__pdf_internal_box=\box45
+\l__kernel_color_stack_int=\count272
+\l__pdf_internal_box=\box52
 ) (/home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
- (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(89.62709pt, 418.25368pt, 89.6271pt)
+* v-part:(T,H,B)=(101.40665pt, 591.5302pt, 152.11pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=418.25368pt
+* \textheight=591.5302pt
+* \oddsidemargin=17.3571pt
+* \evensidemargin=17.3571pt
+* \topmargin=-7.86334pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=57.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count178
-\scratchdimen=\dimen144
-\scratchbox=\box46
-\nofMPsegments=\count179
-\nofMParguments=\count180
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count181
-\MPscratchDim=\dimen145
-\MPnumerator=\count182
-\makeMPintoPDFobject=\count183
-\everyMPtoPDFconversion=\toks18
+\scratchcounter=\count273
+\scratchdimen=\dimen179
+\scratchbox=\box53
+\nofMPsegments=\count274
+\nofMParguments=\count275
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count276
+\MPscratchDim=\dimen180
+\MPnumerator=\count277
+\makeMPintoPDFobject=\count278
+\everyMPtoPDFconversion=\toks23
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 12.
+(Font)              <12> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 12.
+(Font)              <8> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 12.
-
-Overfull \hbox (65.93625pt too wide) in paragraph at lines 12--12
- [][] 
- []
-
+(Font)              <6> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 18.
+(Font)              <7> on input line 23.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 18.
+(Font)              <5> on input line 23.
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--34
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 15--34
+Underfull \hbox (badness 10000) in paragraph at lines 20--39
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--34
+Underfull \hbox (badness 10000) in paragraph at lines 20--39
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--34
+Underfull \hbox (badness 10000) in paragraph at lines 20--39
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--34
+Underfull \hbox (badness 10000) in paragraph at lines 20--39
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--34
+Underfull \hbox (badness 10000) in paragraph at lines 20--39
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--34
+Underfull \hbox (badness 10000) in paragraph at lines 20--39
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--39
 
  []
 
@@ -158,83 +333,175 @@ Underfull \hbox (badness 10000) in paragraph at lines 15--34
 <q1_figs/ActualFunc.png, id=11, 433.62pt x 296.60812pt>
 File: q1_figs/ActualFunc.png Graphic file (type png)
 <use q1_figs/ActualFunc.png>
-Package pdftex.def Info: q1_figs/ActualFunc.png  used on input line 39.
-(pdftex.def)             Requested size: 276.00105pt x 188.80116pt.
+Package pdftex.def Info: q1_figs/ActualFunc.png  used on input line 44.
+(pdftex.def)             Requested size: 334.60422pt x 228.89133pt.
 <q1_figs/Ep1.png, id=13, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep1.png Graphic file (type png)
 <use q1_figs/Ep1.png>
-Package pdftex.def Info: q1_figs/Ep1.png  used on input line 47.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep1.png  used on input line 52.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
 <q1_figs/Ep2.png, id=14, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep2.png Graphic file (type png)
 <use q1_figs/Ep2.png>
-Package pdftex.def Info: q1_figs/Ep2.png  used on input line 53.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep2.png  used on input line 58.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
 <q1_figs/Ep10.png, id=15, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep10.png Graphic file (type png)
 <use q1_figs/Ep10.png>
-Package pdftex.def Info: q1_figs/Ep10.png  used on input line 59.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep10.png  used on input line 64.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
 <q1_figs/Ep50.png, id=16, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep50.png Graphic file (type png)
 <use q1_figs/Ep50.png>
-Package pdftex.def Info: q1_figs/Ep50.png  used on input line 65.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep50.png  used on input line 70.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
 <q1_figs/Ep500.png, id=17, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep500.png Graphic file (type png)
 <use q1_figs/Ep500.png>
-Package pdftex.def Info: q1_figs/Ep500.png  used on input line 71.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep500.png  used on input line 76.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
 <q1_figs/Ep1000.png, id=18, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep1000.png Graphic file (type png)
 <use q1_figs/Ep1000.png>
-Package pdftex.def Info: q1_figs/Ep1000.png  used on input line 77.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep1000.png  used on input line 82.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
 <q1_figs/Ep1500.png, id=19, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep1500.png Graphic file (type png)
 <use q1_figs/Ep1500.png>
-Package pdftex.def Info: q1_figs/Ep1500.png  used on input line 83.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep1500.png  used on input line 88.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
 <q1_figs/Ep2000.png, id=20, 687.56876pt x 464.73625pt>
 File: q1_figs/Ep2000.png Graphic file (type png)
 <use q1_figs/Ep2000.png>
-Package pdftex.def Info: q1_figs/Ep2000.png  used on input line 89.
-(pdftex.def)             Requested size: 276.00105pt x 186.55069pt.
+Package pdftex.def Info: q1_figs/Ep2000.png  used on input line 94.
+(pdftex.def)             Requested size: 334.60422pt x 226.16266pt.
  [2 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/ActualFunc.png>] [3 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep1.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep2.png>] [4 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep10.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep50.png>] [5 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep500.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep1000.png>] [6 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep1500.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Ep2000.png>]
 <q1_figs/errvsep.png, id=45, 388.45125pt x 271.0125pt>
 File: q1_figs/errvsep.png Graphic file (type png)
 <use q1_figs/errvsep.png>
-Package pdftex.def Info: q1_figs/errvsep.png  used on input line 104.
-(pdftex.def)             Requested size: 276.00105pt x 192.56494pt.
+Package pdftex.def Info: q1_figs/errvsep.png  used on input line 109.
+(pdftex.def)             Requested size: 334.60422pt x 233.45078pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--111
+Underfull \hbox (badness 10000) in paragraph at lines 106--116
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--111
+Underfull \hbox (badness 10000) in paragraph at lines 106--116
 
  []
 
 <q1_figs/Scatt.png, id=46, 388.45125pt x 255.95625pt>
 File: q1_figs/Scatt.png Graphic file (type png)
 <use q1_figs/Scatt.png>
-Package pdftex.def Info: q1_figs/Scatt.png  used on input line 114.
-(pdftex.def)             Requested size: 276.00105pt x 181.8669pt.
-[7 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/errvsep.png>] [8 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Scatt.png>] [9] (/home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.aux) ) 
+Package pdftex.def Info: q1_figs/Scatt.png  used on input line 119.
+(pdftex.def)             Requested size: 334.60422pt x 220.4813pt.
+[7 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/errvsep.png>] [8 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q1_figs/Scatt.png>]
+<q2b_figs/training_loss_0.0001.png, id=57, 722.7pt x 578.16pt>
+File: q2b_figs/training_loss_0.0001.png Graphic file (type png)
+<use q2b_figs/training_loss_0.0001.png>
+Package pdftex.def Info: q2b_figs/training_loss_0.0001.png  used on input line 185.
+(pdftex.def)             Requested size: 433.62334pt x 346.89867pt.
+
+Overfull \hbox (15.36966pt too wide) in paragraph at lines 185--186
+ [][] 
+ []
+
+<q2b_figs/validation_loss_0.0001.png, id=58, 722.7pt x 578.16pt>
+File: q2b_figs/validation_loss_0.0001.png Graphic file (type png)
+<use q2b_figs/validation_loss_0.0001.png>
+Package pdftex.def Info: q2b_figs/validation_loss_0.0001.png  used on input line 192.
+(pdftex.def)             Requested size: 433.62334pt x 346.89867pt.
+
+Overfull \hbox (15.36966pt too wide) in paragraph at lines 192--193
+ [][] 
+ []
+
+<q2b_figs/training_accuracy_0.0001.png, id=59, 722.7pt x 578.16pt>
+File: q2b_figs/training_accuracy_0.0001.png Graphic file (type png)
+<use q2b_figs/training_accuracy_0.0001.png>
+Package pdftex.def Info: q2b_figs/training_accuracy_0.0001.png  used on input line 199.
+(pdftex.def)             Requested size: 433.62334pt x 346.89867pt.
+
+Overfull \hbox (15.36966pt too wide) in paragraph at lines 199--200
+ [][] 
+ []
+
+<q2b_figs/validation_accuracy_0.0001.png, id=60, 722.7pt x 578.16pt>
+File: q2b_figs/validation_accuracy_0.0001.png Graphic file (type png)
+<use q2b_figs/validation_accuracy_0.0001.png>
+Package pdftex.def Info: q2b_figs/validation_accuracy_0.0001.png  used on input line 206.
+(pdftex.def)             Requested size: 433.62334pt x 346.89867pt.
+
+Overfull \hbox (15.36966pt too wide) in paragraph at lines 206--207
+ [][] 
+ []
+
+<q2b_figs/confusion_matrix_model_delta_train_0.0001.png, id=61, 722.7pt x 578.16pt>
+File: q2b_figs/confusion_matrix_model_delta_train_0.0001.png Graphic file (type png)
+<use q2b_figs/confusion_matrix_model_delta_train_0.0001.png>
+Package pdftex.def Info: q2b_figs/confusion_matrix_model_delta_train_0.0001.png  used on input line 219.
+(pdftex.def)             Requested size: 184.9429pt x 147.95375pt.
+<q2b_figs/confusion_matrix_model_delta_test_0.0001.png, id=62, 722.7pt x 578.16pt>
+File: q2b_figs/confusion_matrix_model_delta_test_0.0001.png Graphic file (type png)
+<use q2b_figs/confusion_matrix_model_delta_test_0.0001.png>
+Package pdftex.def Info: q2b_figs/confusion_matrix_model_delta_test_0.0001.png  used on input line 221.
+(pdftex.def)             Requested size: 184.9429pt x 147.95375pt.
+[9] [10 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/training_loss_0.0001.png>] [11 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/validation_loss_0.0001.png>] [12 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/training_accuracy_0.0001.png>] [13 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/validation_accuracy_0.0001.png>]
+<q2b_figs/confusion_matrix_model_ada_delta_train_0.0001.png, id=84, 722.7pt x 578.16pt>
+File: q2b_figs/confusion_matrix_model_ada_delta_train_0.0001.png Graphic file (type png)
+<use q2b_figs/confusion_matrix_model_ada_delta_train_0.0001.png>
+Package pdftex.def Info: q2b_figs/confusion_matrix_model_ada_delta_train_0.0001.png  used on input line 228.
+(pdftex.def)             Requested size: 170.71652pt x 136.57338pt.
+<q2b_figs/confusion_matrix_model_ada_delta_test_0.0001.png, id=85, 722.7pt x 578.16pt>
+File: q2b_figs/confusion_matrix_model_ada_delta_test_0.0001.png Graphic file (type png)
+<use q2b_figs/confusion_matrix_model_ada_delta_test_0.0001.png>
+Package pdftex.def Info: q2b_figs/confusion_matrix_model_ada_delta_test_0.0001.png  used on input line 230.
+(pdftex.def)             Requested size: 170.71652pt x 136.57338pt.
+<q2b_figs/confusion_matrix_model_adam_train_0.0001.png, id=86, 722.7pt x 578.16pt>
+File: q2b_figs/confusion_matrix_model_adam_train_0.0001.png Graphic file (type png)
+<use q2b_figs/confusion_matrix_model_adam_train_0.0001.png>
+Package pdftex.def Info: q2b_figs/confusion_matrix_model_adam_train_0.0001.png  used on input line 237.
+(pdftex.def)             Requested size: 184.9429pt x 147.95375pt.
+<q2b_figs/confusion_matrix_model_adam_test_0.0001.png, id=87, 722.7pt x 578.16pt>
+File: q2b_figs/confusion_matrix_model_adam_test_0.0001.png Graphic file (type png)
+<use q2b_figs/confusion_matrix_model_adam_test_0.0001.png>
+Package pdftex.def Info: q2b_figs/confusion_matrix_model_adam_test_0.0001.png  used on input line 239.
+(pdftex.def)             Requested size: 184.9429pt x 147.95375pt.
+ [14 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/confusion_matrix_model_delta_train_0.0001.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/confusion_matrix_model_delta_test_0.0001.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/confusion_matrix_model_ada_delta_train_0.0001.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/confusion_matrix_model_ada_delta_test_0.0001.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/confusion_matrix_model_adam_train_0.0001.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/confusion_matrix_model_adam_test_0.0001.png>]
+<q2b_figs/delta_training_loss_0.0001.png, id=98, 722.7pt x 578.16pt>
+File: q2b_figs/delta_training_loss_0.0001.png Graphic file (type png)
+<use q2b_figs/delta_training_loss_0.0001.png>
+Package pdftex.def Info: q2b_figs/delta_training_loss_0.0001.png  used on input line 248.
+(pdftex.def)             Requested size: 289.07487pt x 231.2599pt.
+<q2b_figs/gen_delta_training_loss_0.0001.png, id=99, 722.7pt x 578.16pt>
+File: q2b_figs/gen_delta_training_loss_0.0001.png Graphic file (type png)
+<use q2b_figs/gen_delta_training_loss_0.0001.png>
+Package pdftex.def Info: q2b_figs/gen_delta_training_loss_0.0001.png  used on input line 256.
+(pdftex.def)             Requested size: 289.07487pt x 231.2599pt.
+<q2b_figs/ada_training_loss_0.0001.png, id=100, 722.7pt x 578.16pt>
+File: q2b_figs/ada_training_loss_0.0001.png Graphic file (type png)
+<use q2b_figs/ada_training_loss_0.0001.png>
+Package pdftex.def Info: q2b_figs/ada_training_loss_0.0001.png  used on input line 263.
+(pdftex.def)             Requested size: 289.07487pt x 231.2599pt.
+ [15 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/delta_training_loss_0.0001.png>] [16 </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/gen_delta_training_loss_0.0001.png> </home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/q2b_figs/ada_training_loss_0.0001.png>] [17] (/home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2358 strings out of 483183
- 39234 string characters out of 5966292
- 268034 words of memory out of 5000000
- 17389 multiletter control sequences out of 15000+600000
- 536620 words of font info for 38 fonts, out of 8000000 for 9000
+ 4241 strings out of 483183
+ 66169 string characters out of 5966292
+ 316552 words of memory out of 5000000
+ 19177 multiletter control sequences out of 15000+600000
+ 536928 words of font info for 39 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 41i,6n,42p,357b,297s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/neham/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on /home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.pdf (9 pages, 4100564 bytes).
+ 50i,9n,49p,445b,365s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/neham/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on /home/neham/Desktop/Sem6/CS6910/CS6910_Assignments/Assignment_1/Report/main.pdf (17 pages, 6148675 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
- 42 compressed objects within 1 object stream
+ 149 PDF objects out of 1000 (max. 8388607)
+ 71 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 

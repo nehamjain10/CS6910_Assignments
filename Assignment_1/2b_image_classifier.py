@@ -1,4 +1,3 @@
-# %%
 import torch
 from torch import nn, optim
 import torch.nn as nn
@@ -30,8 +29,9 @@ class MLFFNN(nn.Module):
 
 
 def plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,is_type="train",loss_or_accuracy="loss"):
+    
     plt.figure(figsize=(10,8),dpi=300)
-    print(epochs[0],len(loss_delta[is_type]))
+    print(epochs[0],epochs[1],epochs[2])
     plt.plot(range(epochs[0]+1),loss_delta[is_type],label="Delta")
     plt.plot(range(epochs[1]+1),loss_ada_delta[is_type],label="Adaptive Delta")
     plt.plot(range(epochs[2]+1),loss_adam[is_type],label="Adam")
@@ -43,8 +43,12 @@ def plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,is_type="trai
         plt.title(f"Validation {loss_or_accuracy} vs Number of epochs with Learning Rate: {lr}")
         plt.savefig(f"figs/validation_{loss_or_accuracy}_{lr}.png")
 
-def plot_confusion_matrix(lr,model_type,dataloader):
-    model = torch.load(f'{model_type}')
+def plot_confusion_matrix(lr,model_type,data_type):
+    if data_type=="train":
+        dataloader = train_dataloader
+    else:
+        dataloader = test_dataloader
+    model = torch.load(f'weights/{model_type}.pth')
     model.eval()
     with torch.no_grad():
         confusion_matrix = torch.zeros(NUM_CLASSES, NUM_CLASSES)
@@ -57,10 +61,18 @@ def plot_confusion_matrix(lr,model_type,dataloader):
             max_indices = torch.argmax(score, dim=1)
             for t, p in zip(y_test.cpu(), max_indices.cpu()):
                 confusion_matrix[t.long(), p.long()] += 1
+        
+        confusion_matrix = confusion_matrix.numpy()
+        confusion_matrix = confusion_matrix.astype('float') / confusion_matrix.sum(axis=1)[:, np.newaxis]
+        
         plt.figure(figsize=(10,8),dpi=300)
-        sns.heatmap(confusion_matrix.numpy(), annot=True, xticklabels=idx_to_labels, yticklabels=idx_to_labels)  
+        sns.heatmap(confusion_matrix, annot=True,fmt='.2f', xticklabels=idx_to_labels, yticklabels=idx_to_labels)  
+        
+        plt.xlabel("Predicted Label")
+        plt.ylabel("True Label")
+        
         plt.title(f"Confusion Matrix with Learning Rate: {lr}")
-        plt.savefig(f"figs/confusion_matrix_{lr}.png")
+        plt.savefig(f"figs/confusion_matrix_{model_type}_{data_type}_{lr}.png")
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
@@ -72,10 +84,10 @@ image_data = np.loadtxt(file_path_image_data)
 labels = np.loadtxt(file_path_image_labels)
 
 group_data = {1:0,2:1,3:2,5:3,6:4}
-idx_to_labels = ["Forest","Highway","Inside","OpenCountry","Street"]
+idx_to_labels = ["Forest","Highway","InsideCity","OpenCountry","Street"]
 
 NUM_CLASSES = 5
-MAX_EPOCHS = 100
+MAX_EPOCHS = 500
 BATCH_SIZE = 1
 
 INPUT_DIM  = image_data.shape[1]
@@ -85,8 +97,8 @@ labels = labels[np.in1d(labels, list(group_data.keys()))]
 labels = np.vectorize(group_data.get)(labels)
 
 # In the first step we will split the data in training and remaining dataset
-X_train, X_rem, y_train, y_rem = train_test_split(image_data,labels, train_size=0.7,random_state=42)
-X_valid, X_test, y_valid, y_test = train_test_split(X_rem, y_rem, test_size=0.67, random_state=42)
+X_train, X_rem, y_train, y_rem = train_test_split(image_data,labels, train_size=0.7,stratify=labels,random_state=42)
+X_valid, X_test, y_valid, y_test = train_test_split(X_rem, y_rem, test_size=0.67,stratify=y_rem, random_state=42)
 
 X_train, y_train, X_valid, X_test, y_valid, y_test = map(torch.tensor, [X_train, y_train, X_valid, X_test, y_valid, y_test])
 
@@ -161,7 +173,7 @@ def train_model(optimizer,model,model_type="model_delta"):
                 y_valid = y_valid.type(torch.long).to(device)
                 
                 score = model(X_valid)
-                score = score.squeeze(dim=1)
+                score = score.squeeze(dim=1)    
                 
                 y_valid = y_valid.squeeze(dim=1)
                 loss = criterion(input=score, target=y_valid)
@@ -182,7 +194,6 @@ def train_model(optimizer,model,model_type="model_delta"):
         else:
             no_improvement+=1
             if no_improvement==4:
-                loss_metrics["train"] = loss_metrics["train"][:-no_improvement]
                 break
     if no_improvement>0:  
         loss_metrics["train"] = loss_metrics["train"][:-no_improvement]
@@ -198,7 +209,7 @@ def train_model(optimizer,model,model_type="model_delta"):
 hidden_dim_1 = [8,16,32,64]  
 hidden_dim_2 = [8,16,32,64]
 lrs = [1e-5,1e-4,1e-3, 1e-2]
-momentums = [0.9,0.8,0.7]
+momentums = [0.9,0.8,0.7,0.5,0.1]
 delta_loss = []
 ada_delta_loss = []
 adam_loss = []
@@ -206,6 +217,7 @@ adam_loss = []
 
 f = open("validation_results.csv", "w")
 csvwriter = csv.writer(f)
+
 
 for momentum in momentums:
     for hid_dim1 in hidden_dim_1:
@@ -234,22 +246,21 @@ for momentum in momentums:
                 csvwriter.writerow(["\n \n Rule Ada Delta",momentum,hid_dim1,hid_dim2,lr,loss_ada_delta["val"][-1],acc_ada_delta["val"][-1],len(acc_ada_delta["val"])])
                 csvwriter.writerow(["\n \n Rule Adam",momentum,hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
 
-                """
+                
                 plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
                 plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
                 
                 plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"train",loss_or_accuracy="accuracy")
                 plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"val",loss_or_accuracy="accuracy")
 
-                plot_confusion_matrix(lr,"model_delta.pth",train_dataloader)
-                plot_confusion_matrix(lr,"model_ada_delta.pth",train_dataloader)
-                plot_confusion_matrix(lr,"model_adam.pth",train_dataloader)
+                plot_confusion_matrix(lr,"model_delta","train")
+                plot_confusion_matrix(lr,"model_ada_delta","train")
+                plot_confusion_matrix(lr,"model_adam","train")
 
-                plot_confusion_matrix(lr,"model_delta.pth",test_dataloader)
-                plot_confusion_matrix(lr,"model_ada_delta.pth",test_dataloader)
-                plot_confusion_matrix(lr,"model_adam.pth",test_dataloader)
-                """
-
+                plot_confusion_matrix(lr,"model_delta","test")
+                plot_confusion_matrix(lr,"model_ada_delta","test")
+                plot_confusion_matrix(lr,"model_adam","test")
+                
 
 
 
