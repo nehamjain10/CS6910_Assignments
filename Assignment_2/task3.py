@@ -4,6 +4,7 @@ from dataset import AnimalDataset
 from MLFFNN import MLFFNN
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
+import torch.optim as optim
 vgg16 = models.vgg16(pretrained=True)
 googlenet = models.googlenet(pretrained=True)
 
@@ -42,8 +43,6 @@ for param in model_conv.parameters():
 # Parameters of newly constructed modules have requires_grad=True by default
 num_ftrs = model_conv.fc.in_features
 model_conv.fc = nn.Linear(num_ftrs, 2)
-
-model_conv = model_conv.to(device)
 
 criterion = nn.CrossEntropyLoss()
 
