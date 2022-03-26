@@ -1,0 +1,3 @@
+what batch size do we have to use?
+Do we have to use data augmentation?
+Do we have to finetune the entire VGG/LeNet or just the fully connected layer?

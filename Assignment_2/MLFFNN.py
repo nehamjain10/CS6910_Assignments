@@ -1,11 +1,11 @@
 import torch.nn as nn
-
+import torch
 
 class MLFFNN(nn.Module):
     """
     Class of Multi Layer Feed Forward Neural Network (MLFFNN)
     """
-    def __init__(self, hidden_dim1=32,hidden_dim2=32) :
+    def __init__(self, INPUT_DIM,NUM_CLASSES,hidden_dim1=32,hidden_dim2=32) :
         super(MLFFNN, self).__init__()
         torch.manual_seed(3)
         # adding linear and non-linear hidden layers
