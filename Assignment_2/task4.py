@@ -1,7 +1,6 @@
 import glob
 import torchvision.models as models
 from dataset import AnimalDataset
-from MLFFNN import MLFFNN
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
 import torch
@@ -9,12 +8,11 @@ import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 import torchvision.transforms as transforms
 from utils import train_model
+from models import CNN
 
-input_size = 224
-vgg16 = models.vgg16(pretrained=True)
-googlenet = models.googlenet(pretrained=True)
+input_size = 256
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 
 classes = ['cavallo', 'farafalla', 'elefante', 'gatto', 'gallina']
 
@@ -63,22 +61,12 @@ train_dataloader = DataLoader(train_animal_dataset, batch_size=BATCH_SIZE,
 test_dataloader = DataLoader(test_animal_dataset, batch_size=BATCH_SIZE,
                               pin_memory=True, shuffle=True)
 
-# print(vgg16,googlenet)
-for param in googlenet.parameters():
-    param.requires_grad = False
 
-num_ftrs = googlenet.fc.in_features
-googlenet.fc = nn.Linear(num_ftrs, NUM_CLASSES)
-
-
-for param in vgg16.parameters():
-    param.requires_grad = False
-
-vgg16.classifier[6] = nn.Linear(4096,NUM_CLASSES)
+model = CNN(4,num_classes=5)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(vgg16.parameters(), lr=3e-4)
+optimizer = optim.Adam(model.parameters(), lr=3e-4)
 
 
-vgg16.to(device)
-train_model(optimizer,criterion,vgg16,train_dataloader,test_dataloader,MAX_EPOCHS=10,device=device)
+model.to(device)
+train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=10,device=device)

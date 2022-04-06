@@ -4,7 +4,7 @@
 from torch.utils.data import Dataset, DataLoader
 import torchvision.io as io
 import torch
-
+from PIL import Image
 class AnimalDataset(Dataset):
     """Animal Dataset"""
 
@@ -26,7 +26,7 @@ class AnimalDataset(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        image = io.imread(self.image_files[idx])
+        image = Image.open(self.image_files[idx])
         label = self.labels[idx]
         
         if self.transform:
