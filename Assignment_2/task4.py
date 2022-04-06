@@ -1,5 +1,4 @@
 import glob
-import torchvision.models as models
 from dataset import AnimalDataset
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
@@ -7,12 +6,13 @@ import torch
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 import torchvision.transforms as transforms
-from utils import train_model
+from utils import *
 from models import CNN
+import csv
 
-input_size = 256
-
+input_size = 224
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 classes = ['cavallo', 'farafalla', 'elefante', 'gatto', 'gallina']
 
@@ -46,8 +46,7 @@ data_transforms = {
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
 }
-# define transforms here
-BATCH_SIZE = 32
+criterion = nn.CrossEntropyLoss()
 
 train_animal_dataset = AnimalDataset(
     images_train, labels_train, transforms=data_transforms["train"])
@@ -55,18 +54,56 @@ train_animal_dataset = AnimalDataset(
 test_animal_dataset = AnimalDataset(
     images_train, labels_train, transforms=data_transforms["val"])
 
-train_dataloader = DataLoader(train_animal_dataset, batch_size=BATCH_SIZE,
-                              pin_memory=True, shuffle=True)
 
-test_dataloader = DataLoader(test_animal_dataset, batch_size=BATCH_SIZE,
-                              pin_memory=True, shuffle=True)
+feats = [4,8,16,32,64]
+hidden_dim_1 = [512,2048,4096]  
+hidden_dim_2 = [512,2048,4096]
+batch_sizes = [4,8,16,32]
+lrs = [1e-2,3e-4, 1e-3]
+
+delta_loss = []
+ada_delta_loss = []
+adam_loss = []
+
+
+f = open("validation_results_vgg.csv", "w")
+csvwriter = csv.writer(f)
+
+for feat in feats:
+    for BATCH_SIZE in batch_sizes:
+        for hid_dim1 in hidden_dim_1:
+            for hid_dim2 in hidden_dim_2:
+                    train_dataloader = DataLoader(train_animal_dataset, batch_size=BATCH_SIZE,
+                                    pin_memory=True, shuffle=True)
+
+                    test_dataloader = DataLoader(test_animal_dataset, batch_size=BATCH_SIZE,
+                                    pin_memory=True, shuffle=True)
+
+
+                    model = CNN(feat,num_classes=5).to(device)
+                    
+                    optimizer = optim.Adam(model.parameters(), lr=3e-4)
+
+                    loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device)
+
+                    print("\n \n Rule Adam",hid_dim1,hid_dim2,3e-4,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
+                    csvwriter.writerow(["\n \n Rule Adam",BATCH_SIZE,hid_dim1,hid_dim2,3e-4,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
+
+                    
+                    # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
+                    # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
+                    
+                    # plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"train",loss_or_accuracy="accuracy")
+                    # plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"val",loss_or_accuracy="accuracy")
+
+                    # plot_confusion_matrix(lr,"model_delta","train")
+                    # plot_confusion_matrix(lr,"model_ada_delta","train")
+                    # plot_confusion_matrix(lr,"model_adam","train")
+
+                    # plot_confusion_matrix(lr,"model_delta","test")
+                    # plot_confusion_matrix(lr,"model_ada_delta","test")
+                    # plot_confusion_matrix(lr,"model_adam","test")
+                
 
 
 model = CNN(4,num_classes=5)
-
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=3e-4)
-
-
-model.to(device)
-train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=10,device=device)
