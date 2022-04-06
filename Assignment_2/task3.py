@@ -1,18 +1,16 @@
 import glob
-import torchvision.models as models
 from dataset import AnimalDataset
-from MLFFNN import MLFFNN
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
 import torch
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 import torchvision.transforms as transforms
-from utils import train_model
+from utils import *
+from models import GoogLeNet_transfer,VGG_transfer
+import csv
 
 input_size = 224
-vgg16 = models.vgg16(pretrained=True)
-googlenet = models.googlenet(pretrained=True)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
@@ -48,8 +46,7 @@ data_transforms = {
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
 }
-# define transforms here
-BATCH_SIZE = 32
+criterion = nn.CrossEntropyLoss()
 
 train_animal_dataset = AnimalDataset(
     images_train, labels_train, transforms=data_transforms["train"])
@@ -57,28 +54,52 @@ train_animal_dataset = AnimalDataset(
 test_animal_dataset = AnimalDataset(
     images_train, labels_train, transforms=data_transforms["val"])
 
-train_dataloader = DataLoader(train_animal_dataset, batch_size=BATCH_SIZE,
-                              pin_memory=True, shuffle=True)
 
-test_dataloader = DataLoader(test_animal_dataset, batch_size=BATCH_SIZE,
-                              pin_memory=True, shuffle=True)
+hidden_dim_1 = [512,2048,4096]  
+hidden_dim_2 = [512,2048,4096]
+batch_sizes = [4,8,16,32]
+lrs = [1e-2,3e-4, 1e-3]
 
-# print(vgg16,googlenet)
-for param in googlenet.parameters():
-    param.requires_grad = False
-
-num_ftrs = googlenet.fc.in_features
-googlenet.fc = nn.Linear(num_ftrs, NUM_CLASSES)
+delta_loss = []
+ada_delta_loss = []
+adam_loss = []
 
 
-for param in vgg16.parameters():
-    param.requires_grad = False
+f = open("validation_results_vgg.csv", "w")
+csvwriter = csv.writer(f)
 
-vgg16.classifier[6] = nn.Linear(4096,NUM_CLASSES)
+for BATCH_SIZE in batch_sizes:
+    for hid_dim1 in hidden_dim_1:
+        for hid_dim2 in hidden_dim_2:
+            for lr in lrs:
+                train_dataloader = DataLoader(train_animal_dataset, batch_size=BATCH_SIZE,
+                                pin_memory=True, shuffle=True)
 
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(vgg16.parameters(), lr=3e-4)
+                test_dataloader = DataLoader(test_animal_dataset, batch_size=BATCH_SIZE,
+                                pin_memory=True, shuffle=True)
 
 
-vgg16.to(device)
-train_model(optimizer,criterion,vgg16,train_dataloader,test_dataloader,MAX_EPOCHS=10,device=device)
+                model = VGG_transfer(5,hid_dim1,hid_dim2).to(device)
+                
+                optimizer = optim.Adam(model.parameters(), lr=lr)
+
+                loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device)
+
+                print("\n \n Rule Adam",hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
+                csvwriter.writerow(["\n \n Rule Adam",BATCH_SIZE,hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
+
+                
+                # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
+                # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
+                
+                # plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"train",loss_or_accuracy="accuracy")
+                # plot_comparative(acc_delta,acc_ada_delta,acc_adam,epochs,lr,"val",loss_or_accuracy="accuracy")
+
+                # plot_confusion_matrix(lr,"model_delta","train")
+                # plot_confusion_matrix(lr,"model_ada_delta","train")
+                # plot_confusion_matrix(lr,"model_adam","train")
+
+                # plot_confusion_matrix(lr,"model_delta","test")
+                # plot_confusion_matrix(lr,"model_ada_delta","test")
+                # plot_confusion_matrix(lr,"model_adam","test")
+                
