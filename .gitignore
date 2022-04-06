@@ -3,3 +3,4 @@ Assignment_2/data/*
 *.pth
 *.pyc
 *.csv
+*.pt

@@ -10,7 +10,7 @@ from utils import *
 from models import CNN
 import csv
 
-input_size = 224
+input_size = 256
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
@@ -59,14 +59,13 @@ feats = [4,8,16,32,64]
 hidden_dim_1 = [512,2048,4096]  
 hidden_dim_2 = [512,2048,4096]
 batch_sizes = [4,8,16,32]
-lrs = [1e-2,3e-4, 1e-3]
 
 delta_loss = []
 ada_delta_loss = []
 adam_loss = []
 
 
-f = open("validation_results_vgg.csv", "w")
+f = open("validation_results_task4.csv", "w")
 csvwriter = csv.writer(f)
 
 for feat in feats:
@@ -86,10 +85,12 @@ for feat in feats:
 
                     loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device)
 
-                    print("\n \n Rule Adam",hid_dim1,hid_dim2,3e-4,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
-                    csvwriter.writerow(["\n \n Rule Adam",BATCH_SIZE,hid_dim1,hid_dim2,3e-4,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
-
-                    
+                    try:
+                        print("\n \n Rule Adam",hid_dim1,hid_dim2,3e-4,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
+                        csvwriter.writerow(["\n \n Rule Adam",BATCH_SIZE,hid_dim1,hid_dim2,3e-4,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
+                    except:
+                        pass
+                
                     # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
                     # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
                     
@@ -105,5 +106,3 @@ for feat in feats:
                     # plot_confusion_matrix(lr,"model_adam","test")
                 
 
-
-model = CNN(4,num_classes=5)

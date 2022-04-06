@@ -63,8 +63,6 @@ def train_model(optimizer,criterion, model,train_dataloader,val_dataloader,MAX_E
         
         accuracy_metrics["val"].append(correct_classified.item() / len(val_dataloader.dataset))
         
-        print(np.average(train_loss))
-        print(np.average(validation_loss))
         loss_metrics["train"].append(np.average(train_loss))
         loss_metrics["val"].append(np.average(validation_loss))
     

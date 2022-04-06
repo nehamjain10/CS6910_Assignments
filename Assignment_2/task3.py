@@ -11,7 +11,7 @@ from models import GoogLeNet_transfer,VGG_transfer
 import csv
 
 input_size = 224
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 classes = ['cavallo', 'farafalla', 'elefante', 'gatto', 'gallina']
@@ -85,9 +85,11 @@ for BATCH_SIZE in batch_sizes:
 
                 loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device)
 
-                print("\n \n Rule Adam",hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
-                csvwriter.writerow(["\n \n Rule Adam",BATCH_SIZE,hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
-
+                try:
+                    print("\n \n Rule Adam",hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
+                    csvwriter.writerow(["\n \n Rule Adam",BATCH_SIZE,hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
+                except:
+                    pass
                 
                 # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
                 # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
