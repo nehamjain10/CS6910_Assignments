@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{CS6910 Assignment2}
+\author{Lakshya J(EE19B035)\\ Neham Jain(EE19B084)\\ Nisharg Manvar(EE19B094)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Task 2}
+\subsection{About}
+\begin{itemize}
+    \item In this part we design a Stacked encoder of 3 layers using pre-trained Auto Associative Neural Networks (AANNs) of depth 5. Each of the three AANNs are trained with the output of the bottleneck layer of the previous AANN (except the first one, which is trained using the dataset provided).
+    \item On observation of the datasets given, the row of each of the classes sums to a particular value. Hence we decided to normalize each of the rows with the sum of the elements in each row.
+    \item On running the simulations for multiple learning rates and different batch sizes we find the optimal hyperparameters.
+\end{itemize}
+
+\subsection{Model}
+\begin{itemize}
+    \item Since the input size is 48, we use autoencoders with input length d=48, l1 = 32, l2 = 16, l3 = 8. These are the layer sizes we obtained after performing PCA from the previous dataset. Finally we add a linear layer of size 5, which is the number of classes, to approximate the class which the input data belongs.
+\end{itemize}
+
+\subsection{Observations}
+\begin{itemize}
+    \item 
+\end{itemize}
+
+
+
+\end{document}
