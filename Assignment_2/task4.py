@@ -10,7 +10,7 @@ from utils import *
 from models import CNN
 import csv
 
-input_size = 256
+input_size = 224
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 classes = ['cavallo', 'farfalla', 'elefante', 'gatto', 'gallina']
@@ -69,10 +69,11 @@ adam_loss = []
 f = open("validation_results_task4.csv", "w")
 csvwriter = csv.writer(f)
 
+count = 0
 for feat in feats:
     for BATCH_SIZE in batch_sizes:
         for lr in lrs:
-
+            model_type =f"CNN{count}"
             train_dataloader = DataLoader(train_animal_dataset, batch_size=BATCH_SIZE,
                             pin_memory=True, shuffle=True,num_workers=10)
 
@@ -84,14 +85,21 @@ for feat in feats:
             
             optimizer = optim.Adam(model.parameters(), lr=lr)
 
-            loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device,save_name="CNN")
+            loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device,save_name=model_type)
 
             try:
                 print("\n \n Rule Adam",lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
                 csvwriter.writerow(["\n \n Rule Adam",BATCH_SIZE,feats,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"])])
             except:
-                pass
-        
+                continue
+                
+            plot_confusion_matrix(lr,model_type,"train",train_dataloader,device,classes)
+            plot_confusion_matrix(lr,model_type,"test",test_dataloader,device,classes)
+
+                
+            plot_comparative(loss_adam,"loss",model_type)
+            plot_comparative(acc_adam,"accuracy",model_type)
+            count +=1
             # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"train",loss_or_accuracy="loss")
             # plot_comparative(loss_delta,loss_ada_delta,loss_adam,epochs,lr,"val",loss_or_accuracy="loss")
             
