@@ -13,8 +13,7 @@ import csv
 input_size = 224
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
-classes = ['cavallo', 'farafalla', 'elefante', 'gatto', 'gallina']
+classes = ['cavallo', 'farfalla', 'elefante', 'gatto', 'gallina']
 
 NUM_CLASSES = len(classes)
 
@@ -24,10 +23,13 @@ image_files = []
 labels = []
 
 for i in classes:
-    image_files.extend(glob.glob('data/resized_animal_10/' + i + '/*.jpg'))
+    image_files.extend(glob.glob('data/resized_animal_10/' + i + '/*'))
     labels.extend([class_mapping[i]] *
-                  len(glob.glob('data/resized_animal_10/' + i + '/*.jpg')))
+                  len(glob.glob('data/resized_animal_10/' + i + '/*')))
 
+
+print(len(image_files))
+print(len(labels))
 
 images_train, images_val, labels_train, labels_val = train_test_split(
     image_files, labels, train_size=0.8, stratify=labels)
@@ -57,15 +59,15 @@ test_animal_dataset = AnimalDataset(
 
 hidden_dim_1 = [512,2048,4096]  
 hidden_dim_2 = [512,2048,4096]
-batch_sizes = [4,8,16,32]
-lrs = [1e-2,3e-4, 1e-3]
+batch_sizes = [64,128]
+lrs = [3e-4, 1e-3]
 
 delta_loss = []
 ada_delta_loss = []
 adam_loss = []
 
 
-f = open("validation_results_vgg.csv", "w")
+f = open("validation_results_vggnet.csv", "w")
 csvwriter = csv.writer(f)
 
 for BATCH_SIZE in batch_sizes:
@@ -73,11 +75,10 @@ for BATCH_SIZE in batch_sizes:
         for hid_dim2 in hidden_dim_2:
             for lr in lrs:
                 train_dataloader = DataLoader(train_animal_dataset, batch_size=BATCH_SIZE,
-                                pin_memory=True, shuffle=True)
+                                pin_memory=True, shuffle=True,num_workers=10)
 
-                test_dataloader = DataLoader(test_animal_dataset, batch_size=BATCH_SIZE,
-                                pin_memory=True, shuffle=True)
-
+                test_dataloader = DataLoader(test_animal_dataset, batch_size=128,
+                                pin_memory=True, shuffle=True,num_workers=10)
 
                 model = VGG_transfer(5,hid_dim1,hid_dim2).to(device)
                 

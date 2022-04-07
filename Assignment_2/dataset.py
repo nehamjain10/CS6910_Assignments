@@ -1,6 +1,6 @@
 #Team  12   ['cavallo', 'farafalla', 'elefante', 'gatto', 'gallina']
 
-
+import time
 from torch.utils.data import Dataset, DataLoader
 import torchvision.io as io
 import torch

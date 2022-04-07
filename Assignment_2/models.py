@@ -59,7 +59,7 @@ class CNN(nn.Module):
 
 class VGG_transfer(nn.Module):
     """
-    Class of Multi Layer Feed Forward Neural Network (MLFFNN)
+    Class of VGG transfer Neural Network (MLFFNN)
     """
     def __init__(self,NUM_CLASSES,hidden_dim1=32,hidden_dim2=32) :
         super(VGG_transfer, self).__init__()
@@ -95,6 +95,7 @@ class GoogLeNet_transfer(nn.Module):
     
     def forward(self, X):
         feats = self.googlenet(X)
+        feats = torch.flatten(feats,1)        
         y = self.mlffn(feats)
         return y
 
