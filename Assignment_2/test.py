@@ -80,16 +80,16 @@ for BATCH_SIZE in batch_sizes:
                 #model = VGG_transfer(5,hid_dim1,hid_dim2).to(device)
                 optimizer = optim.Adam(model.parameters(), lr=lr)
 
-                loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device,save_name=model_type)
+                #loss_adam,acc_adam,epoch_adam = train_model(optimizer,criterion,model,train_dataloader,test_dataloader,MAX_EPOCHS=50,device=device,save_name=model_type)
 
-                plot_confusion_matrix(lr,model_type,"train",train_dataloader,device,classes)
-                plot_confusion_matrix(lr,model_type,"test",test_dataloader,device,classes)
+                #plot_confusion_matrix(lr,model_type,"train",train_dataloader,device,classes)
+                #plot_confusion_matrix(lr,model_type,"test",test_dataloader,device,classes)
 
                 
-                plot_comparative(loss_adam,"loss",model_type)
-                plot_comparative(acc_adam,"accuracy",model_type)
+                #plot_comparative(loss_adam,"loss",model_type)
+                #plot_comparative(acc_adam,"accuracy",model_type)
 
-                #plot_misclassified_examples("CNN",test_dataloader,device,classes)
+                plot_misclassified_examples(model_type,test_dataloader,device,classes)
 
                 try:
                     print("\n \n Rule Adam",BATCH_SIZE,hid_dim1,hid_dim2,lr,loss_adam["val"][-1],acc_adam["val"][-1],len(acc_adam["val"]))
