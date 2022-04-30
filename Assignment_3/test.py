@@ -8,8 +8,8 @@ import numpy as np
 from torchtext.data.metrics import bleu_score
 from utils import *
 from torchtext.data.utils import get_tokenizer
-import wandb
-wandb.init(project="CS6910_Image_Captioning")
+import imageio
+
 
 input_size = 224
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -41,49 +41,45 @@ image_cap_dataset_test = ImageCaption("image_captions/image_mapping and captions
                                         captions_vocab,data_transforms["val"],"val")
 
 
-image_cap_train_dataloader  = DataLoader(image_cap_dataset_train, batch_size=32,num_workers=12, shuffle=True)
-image_capt_test_dataloader  = DataLoader(image_cap_dataset_test, batch_size=32,num_workers=12, shuffle=False)
+image_cap_train_dataloader  = DataLoader(image_cap_dataset_train, batch_size=16,num_workers=12, shuffle=True)
+image_capt_test_dataloader  = DataLoader(image_cap_dataset_test, batch_size=16,num_workers=12, shuffle=False)
 
-
+itos = captions_vocab.get_itos() 
 
 embed_size = 300
-hidden_size = 64
+hidden_size = 128
 lr = 3e-4
-MAX_EPOCHS = 50
+MAX_EPOCHS = 500
 
-encoder = EncoderCNN(embed_size).to(device)
-decoder = DecoderRNN(embed_size, hidden_size, len(captions_vocab)).to(device)
+encoder = torch.load("weights/encoder_weights.pt")
+decoder = torch.load("weights/decoder_weigts.pt")
 
-criterion = nn.CrossEntropyLoss(ignore_index=captions_vocab["<pad>"])
-params = list(decoder.parameters()) + list(encoder.linear.parameters()) + list(encoder.bn.parameters())
 
-optimizer = torch.optim.Adam(params, lr=lr)
-    
-# Train the models
-for epoch in range(MAX_EPOCHS):
-    average_loss = []
-    for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_cap_train_dataloader):
+with torch.no_grad():  
+    # set the evaluation mode
+    encoder.eval()
+    decoder.eval()
+
+    for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_capt_test_dataloader):
         # Set mini-batch dataset
         images = images.to(device)
         embedding_vector = embedding_vector.to(device)
         token_numbers = token_numbers.to(device)
-        token_numbers = token_numbers[:,1:]
-        #targets = pack_padded_sequence(token_numbers, lengths, batch_first=True,enforce_sorted=False)[0]
         
         # Forward, backward and optimize
         features = encoder(images)
-        outputs = decoder(features, embedding_vector)
-        outputs = outputs.permute(0,2,1)
-
-        loss = criterion(outputs, token_numbers)
-        average_loss.append(loss.item())
-        decoder.zero_grad()
-        encoder.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        if i%10==0:
-            wandb.log({'cross entropy loss': loss})    
-
-    print("Epoch: {} Average Loss: {}".format(epoch, np.mean(average_loss)))
-
+        outputs = decoder.sample(features)
+        
+        images = images.cpu().numpy()
+        images = np.moveaxis(images, 1, -1)
+        for i in range(outputs.shape[0]):
+            caption = []
+            gt_caption = []
+            for tokens in outputs[i]:
+                caption.append(itos[tokens])
+            for tokens in token_numbers[i]:
+                gt_caption.append(itos[tokens])
+            
+            #imageio.imwrite("results/{}.jpg".format(i), images[i])
+            print(caption)
+            print(gt_caption)
