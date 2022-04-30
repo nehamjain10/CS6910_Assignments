@@ -47,43 +47,66 @@ image_capt_test_dataloader  = DataLoader(image_cap_dataset_test, batch_size=32,n
 
 
 embed_size = 300
-hidden_size = 64
+hidden_size = 256
 lr = 3e-4
-MAX_EPOCHS = 50
+MAX_EPOCHS = 100
 
-encoder = EncoderCNN(embed_size).to(device)
+encoder = EncoderCNN(hidden_size).to(device)
 decoder = DecoderRNN(embed_size, hidden_size, len(captions_vocab)).to(device)
 
 criterion = nn.CrossEntropyLoss(ignore_index=captions_vocab["<pad>"])
 params = list(decoder.parameters()) + list(encoder.linear.parameters()) + list(encoder.bn.parameters())
 
 optimizer = torch.optim.Adam(params, lr=lr)
-    
+best_loss = 10000
 # Train the models
 for epoch in range(MAX_EPOCHS):
-    average_loss = []
+    train_loss = []
+    validation_loss = []
     for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_cap_train_dataloader):
         # Set mini-batch dataset
         images = images.to(device)
         embedding_vector = embedding_vector.to(device)
         token_numbers = token_numbers.to(device)
-        token_numbers = token_numbers[:,1:]
-        #targets = pack_padded_sequence(token_numbers, lengths, batch_first=True,enforce_sorted=False)[0]
         
-        # Forward, backward and optimize
         features = encoder(images)
-        outputs = decoder(features, embedding_vector)
-        outputs = outputs.permute(0,2,1)
 
-        loss = criterion(outputs, token_numbers)
-        average_loss.append(loss.item())
+        outputs = decoder(features,token_numbers[:,:-1])
+        outputs = outputs.permute(0,2,1)
+        
+        loss = criterion(outputs, token_numbers[:,1:])
+        train_loss.append(loss.item())
         decoder.zero_grad()
         encoder.zero_grad()
         loss.backward()
         optimizer.step()
 
         if i%10==0:
-            wandb.log({'cross entropy loss': loss})    
+            wandb.log({'training loss': loss})
 
-    print("Epoch: {} Average Loss: {}".format(epoch, np.mean(average_loss)))
+    with torch.no_grad():
+        for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_capt_test_dataloader):
+            # Set mini-batch dataset
+            images = images.to(device)
+            embedding_vector = embedding_vector.to(device)
+            token_numbers = token_numbers.to(device)
+            
+            features = encoder(images)
+
+            outputs = decoder(features,token_numbers[:,:-1])
+            outputs = outputs.permute(0,2,1)
+            
+            loss = criterion(outputs, token_numbers[:,1:])
+            validation_loss.append(loss.item())
+
+            if i%10==0:
+                wandb.log({'validation loss': loss})
+               
+    if np.mean(validation_loss) < best_loss:
+        best_loss = np.mean(validation_loss)
+        torch.save(encoder, "weights/encoder.pth")
+        torch.save(decoder, "weights/decoder.pth")
+        print("Saved Weights")
+
+    print("Epoch: {} Train Loss: {} Validation Loss: {}".format(epoch, np.mean(train_loss),np.mean(validation_loss)))
 
