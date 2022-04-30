@@ -7,25 +7,32 @@ import os
 import re
 import spacy  
 import random
+from torch.nn.utils.rnn import pad_sequence
 from utils import *
 from torchtext.data.utils import get_tokenizer
+import torchtext
+
 
 class ImageCaption(Dataset):
     """Animal Dataset"""
 
-    def __init__(self,image_file,caption_file,glove_embedding, transforms=None,type="train"):
+    def __init__(self,image_file,caption_file, transforms=None,type="train"):
         """
         Args:
             root_dir (string): Directory with all the images.
             transform (callable, optional): Optional transform to be applied
                 on a sample.
         """
-        self.en_tokenizer = get_tokenizer('spacy', language='en')
-
+        self.en_tokenizer = get_tokenizer('spacy', language='en_core_web_sm')
         self.transform  = transforms
+        self.max_length = 20
         self.vocab_captions = build_vocab(caption_file, self.en_tokenizer)
-        self.glove_embedding = glove_embedding
+        self.vec = torchtext.vocab.GloVe(name='6B', dim=300)
 
+        self.PAD_IDX = self.vocab_captions['<pad>']
+        self.BOS_IDX = self.vocab_captions['<bos>']
+        self.EOS_IDX = self.vocab_captions['<eos>']
+        
         with open(image_file) as f:
             self.image_files = f.readlines()
 
@@ -63,15 +70,26 @@ class ImageCaption(Dataset):
         image_name = self.image_files[idx].split('/')[-1]
 
         caption = random.sample(self.image_to_caption[image_name],1)[0]
+
         tokens = self.en_tokenizer(caption)
         
-        numerical_caption = []
-        for t in tokens:
-            try:
-                numerical_caption.append(self.glove_embedding[t])
-            except:
-                numerical_caption
+        tokens = ["<bos>"] + tokens + ["<eos>"]
+
+        if len(tokens) > self.max_length:
+            tokens = tokens[:self.max_length]
+        if len(tokens)<self.max_length:
+            tokens = tokens + ['<pad>']*(self.max_length-len(tokens))
+            
+        token_numbers = torch.tensor([self.vocab_captions[token] for token in tokens],dtype=torch.long)
+        embedding_vector = self.vec.get_vecs_by_tokens(tokens, lower_case_backup=True)
+
+        # numerical_caption = []
+        # for t in tokens:
+        #     try:
+        #         numerical_caption.append(self.glove_embedding[t])
+        #     except:
+        #         numerical_caption.append()
         if self.transform:
             image = self.transform(image)
         
-        return image,torch.tensor(numerical_caption)
+        return image,embedding_vector,token_numbers
