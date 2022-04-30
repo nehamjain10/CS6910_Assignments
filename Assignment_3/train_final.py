@@ -41,13 +41,13 @@ image_cap_dataset_test = ImageCaption("image_captions/image_mapping and captions
                                         captions_vocab,data_transforms["val"],"val")
 
 
-image_cap_train_dataloader  = DataLoader(image_cap_dataset_train, batch_size=32,num_workers=10, shuffle=True)
-image_capt_test_dataloader  = DataLoader(image_cap_dataset_test, batch_size=32,num_workers=10, shuffle=False)
+image_cap_train_dataloader  = DataLoader(image_cap_dataset_train, batch_size=32,num_workers=12, shuffle=True)
+image_capt_test_dataloader  = DataLoader(image_cap_dataset_test, batch_size=32,num_workers=12, shuffle=False)
 
 
 
 embed_size = 300
-hidden_size = 32
+hidden_size = 128
 lr = 3e-4
 MAX_EPOCHS = 50
 
@@ -60,32 +60,30 @@ params = list(decoder.parameters()) + list(encoder.linear.parameters()) + list(e
 optimizer = torch.optim.Adam(params, lr=lr)
     
 # Train the models
-total_step = len(image_cap_train_dataloader)
-
 for epoch in range(MAX_EPOCHS):
+    average_loss = []
     for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_cap_train_dataloader):
-        
         # Set mini-batch dataset
         images = images.to(device)
         embedding_vector = embedding_vector.to(device)
         token_numbers = token_numbers.to(device)
+        token_numbers = token_numbers[:,1:]
         #targets = pack_padded_sequence(token_numbers, lengths, batch_first=True,enforce_sorted=False)[0]
         
         # Forward, backward and optimize
         features = encoder(images)
-        
-        outputs = decoder(features, embedding_vector, lengths)
-        outputs = outputs[:,:-1,:]
+        outputs = decoder(features, embedding_vector)
         outputs = outputs.permute(0,2,1)
-        
+
         loss = criterion(outputs, token_numbers)
-        
+        average_loss.append(loss.item())
         decoder.zero_grad()
         encoder.zero_grad()
         loss.backward()
         optimizer.step()
 
         if i%10==0:
-            wandb.log({'loss': loss})    
+            wandb.log({'cross entropy loss': loss})    
 
+    print("Epoch: {} Average Loss: {}".format(epoch, np.mean(average_loss)))
 

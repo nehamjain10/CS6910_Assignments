@@ -27,17 +27,36 @@ class DecoderRNN(nn.Module):
     def __init__(self, embed_size, hidden_size, vocab_size, max_seq_length=20):
         """Set the hyper-parameters and build the layers."""
         super(DecoderRNN, self).__init__()
-        self.lstm = nn.LSTM(embed_size, hidden_size, 1, batch_first=True)
+        self.hidden_size =  hidden_size
+        self.lstm_cell = nn.LSTMCell(input_size=embed_size, hidden_size=hidden_size)
         self.linear = nn.Linear(hidden_size, vocab_size)
         self.max_seg_length = max_seq_length
+        self.vocab_size = vocab_size
         
-    def forward(self, features, captions, lengths):
+    def forward(self, features, caption_embedding):
         """Decode image feature vectors and generates captions."""
 
-        embeddings = torch.cat((features.unsqueeze(1), captions), 1)
-        #packed = pack_padded_sequence(embeddings, lengths, batch_first=True,enforce_sorted=False) 
-        hiddens, _ = self.lstm(embeddings)
-        outputs = self.linear(hiddens)
+        batch_size = features.size(0)
+        
+        hidden_state = torch.zeros((batch_size, self.hidden_size)).cuda()
+        cell_state = torch.zeros((batch_size, self.hidden_size)).cuda()
+        outputs = torch.empty((batch_size, caption_embedding.size(1)-1, self.vocab_size)).cuda()
+        
+        for t in range(caption_embedding.size(1)):
+
+            # for the first time step the input is the feature vector
+            if t == 0:
+                hidden_state, cell_state = self.lstm_cell(features, (hidden_state, cell_state))
+                
+            # for the 2nd+ time step, using teacher forcer
+            else:
+                hidden_state, cell_state = self.lstm_cell(caption_embedding[:, t-1, :], (hidden_state, cell_state))
+            
+                out = self.linear(hidden_state)
+                
+                # build the output tensor
+                outputs[:, t-1, :] = out
+    
         return outputs
     
     def sample(self, features, states=None):
