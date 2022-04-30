@@ -16,7 +16,7 @@ import torchtext
 class ImageCaption(Dataset):
     """Animal Dataset"""
 
-    def __init__(self,image_file,caption_file, transforms=None,type="train"):
+    def __init__(self,image_file,caption_file,vocab_captions, transforms=None,type="train"):
         """
         Args:
             root_dir (string): Directory with all the images.
@@ -26,7 +26,7 @@ class ImageCaption(Dataset):
         self.en_tokenizer = get_tokenizer('spacy', language='en_core_web_sm')
         self.transform  = transforms
         self.max_length = 20
-        self.vocab_captions = build_vocab(caption_file, self.en_tokenizer)
+        self.vocab_captions = vocab_captions
         self.vec = torchtext.vocab.GloVe(name='6B', dim=300)
 
         self.PAD_IDX = self.vocab_captions['<pad>']
@@ -75,6 +75,8 @@ class ImageCaption(Dataset):
         
         tokens = ["<bos>"] + tokens + ["<eos>"]
 
+        lengths = len(tokens)
+
         if len(tokens) > self.max_length:
             tokens = tokens[:self.max_length]
         if len(tokens)<self.max_length:
@@ -92,4 +94,4 @@ class ImageCaption(Dataset):
         if self.transform:
             image = self.transform(image)
         
-        return image,embedding_vector,token_numbers
+        return image,embedding_vector,token_numbers,torch.tensor(lengths)

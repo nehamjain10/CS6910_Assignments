@@ -27,7 +27,6 @@ class DecoderRNN(nn.Module):
     def __init__(self, embed_size, hidden_size, vocab_size, max_seq_length=20):
         """Set the hyper-parameters and build the layers."""
         super(DecoderRNN, self).__init__()
-        self.embed = nn.Embedding(vocab_size, embed_size)
         self.lstm = nn.LSTM(embed_size, hidden_size, 1, batch_first=True)
         self.linear = nn.Linear(hidden_size, vocab_size)
         self.max_seg_length = max_seq_length
@@ -36,9 +35,9 @@ class DecoderRNN(nn.Module):
         """Decode image feature vectors and generates captions."""
 
         embeddings = torch.cat((features.unsqueeze(1), captions), 1)
-        packed = pack_padded_sequence(embeddings, lengths, batch_first=True) 
-        hiddens, _ = self.lstm(packed)
-        outputs = self.linear(hiddens[0])
+        #packed = pack_padded_sequence(embeddings, lengths, batch_first=True,enforce_sorted=False) 
+        hiddens, _ = self.lstm(embeddings)
+        outputs = self.linear(hiddens)
         return outputs
     
     def sample(self, features, states=None):
