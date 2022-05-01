@@ -45,7 +45,6 @@ image_cap_train_dataloader  = DataLoader(image_cap_dataset_train, batch_size=32,
 image_capt_test_dataloader  = DataLoader(image_cap_dataset_test, batch_size=32,num_workers=12, shuffle=False)
 
 
-
 embed_size = 300
 hidden_size = 256
 lr = 3e-4
@@ -55,7 +54,7 @@ encoder = EncoderCNN(hidden_size).to(device)
 decoder = DecoderRNN(embed_size, hidden_size, len(captions_vocab)).to(device)
 
 criterion = nn.CrossEntropyLoss(ignore_index=captions_vocab["<pad>"])
-params = list(decoder.parameters()) + list(encoder.linear.parameters()) + list(encoder.bn.parameters())
+params = list(decoder.parameters()) + list(encoder.linear.parameters()) + list(encoder.bn.parameters())+list(encoder.netvlad.parameters())
 
 optimizer = torch.optim.Adam(params, lr=lr)
 best_loss = 10000
@@ -63,6 +62,8 @@ best_loss = 10000
 for epoch in range(MAX_EPOCHS):
     train_loss = []
     validation_loss = []
+    encoder.train()
+    decoder.train()
     for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_cap_train_dataloader):
         # Set mini-batch dataset
         images = images.to(device)
@@ -71,7 +72,9 @@ for epoch in range(MAX_EPOCHS):
         
         features = encoder(images)
 
-        outputs = decoder(features,token_numbers[:,:-1])
+        #outputs = decoder(features,token_numbers[:,:-1])
+        outputs = decoder(features,token_numbers[:,:-1],embedding_vector[:,:-1])
+        
         outputs = outputs.permute(0,2,1)
         
         loss = criterion(outputs, token_numbers[:,1:])
@@ -85,6 +88,8 @@ for epoch in range(MAX_EPOCHS):
             wandb.log({'training loss': loss})
 
     with torch.no_grad():
+        encoder.eval()
+        decoder.eval()
         for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_capt_test_dataloader):
             # Set mini-batch dataset
             images = images.to(device)
@@ -93,7 +98,9 @@ for epoch in range(MAX_EPOCHS):
             
             features = encoder(images)
 
-            outputs = decoder(features,token_numbers[:,:-1])
+            outputs = decoder(features,token_numbers[:,:-1],embedding_vector[:,:-1])
+            #outputs = decoder(features,token_numbers[:,:-1])
+            
             outputs = outputs.permute(0,2,1)
             
             loss = criterion(outputs, token_numbers[:,1:])
