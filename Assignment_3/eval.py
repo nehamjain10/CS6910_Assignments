@@ -1,4 +1,4 @@
-from dataset import ImageCaption
+from dataset import ImageCaptionTest
 import torch.nn as nn
 import torch
 from torch.utils.data import DataLoader
@@ -33,15 +33,12 @@ data_transforms = {
 tokenizer = get_tokenizer('spacy', language='en_core_web_sm')
 captions_vocab = build_vocab("image_captions/image_mapping and captions/12/captions.txt", tokenizer)
 
-image_cap_dataset_train = ImageCaption("image_captions/image_mapping and captions/12/image_names.txt", 
+
+image_cap_dataset_test = ImageCaptionTest("image_captions/image_mapping and captions/12/image_names.txt",
                                         "image_captions/image_mapping and captions/12/captions.txt",
-                                        captions_vocab,data_transforms["train"],"train")
-image_cap_dataset_test = ImageCaption("image_captions/image_mapping and captions/12/image_names.txt",
-                                        "image_captions/image_mapping and captions/12/captions.txt",
-                                        captions_vocab,data_transforms["val"],"val")
+                                        data_transforms["val"],"val")
 
 
-image_cap_train_dataloader  = DataLoader(image_cap_dataset_train, batch_size=16,num_workers=12, shuffle=True)
 image_capt_test_dataloader  = DataLoader(image_cap_dataset_test, batch_size=16,num_workers=12, shuffle=False)
 
 itos = captions_vocab.get_itos() 
@@ -51,35 +48,33 @@ hidden_size = 128
 lr = 3e-4
 MAX_EPOCHS = 500
 
-encoder = torch.load("weights/encoder_weights.pt")
-decoder = torch.load("weights/decoder_weigts.pt")
+encoder = torch.load("weights/encoder.pth")
+decoder = torch.load("weights/decoder.pth")
 
 
 with torch.no_grad():  
     # set the evaluation mode
     encoder.eval()
     decoder.eval()
-
-    for i, (images,embedding_vector,token_numbers,lengths) in enumerate(image_capt_test_dataloader):
+    pred_captions = []
+    gt_captions = []
+    for i, (images,caption) in enumerate(image_capt_test_dataloader):
         # Set mini-batch dataset
-        images = images.to(device)
-        embedding_vector = embedding_vector.to(device)
-        token_numbers = token_numbers.to(device)
-        
+        images = images.to(device)        
         # Forward, backward and optimize
         features = encoder(images)
-        outputs = decoder.sample(features)
+        outputs = decoder.greedy_sample(features)
         
         images = images.cpu().numpy()
         images = np.moveaxis(images, 1, -1)
+
         for i in range(outputs.shape[0]):
-            caption = []
-            gt_caption = []
+            caption_pred = ""
             for tokens in outputs[i]:
-                caption.append(itos[tokens])
-            for tokens in token_numbers[i]:
-                gt_caption.append(itos[tokens])
-            
+                if itos[tokens]=="<eos>":
+                    break
+                caption_pred += itos[tokens]
+            pred_captions.append(caption_pred)
+
             #imageio.imwrite("results/{}.jpg".format(i), images[i])
-            print(caption)
-            print(gt_caption)
+            print(caption_pred)

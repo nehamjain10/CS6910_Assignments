@@ -7,26 +7,6 @@ import numpy as np
 import operator
 from queue import PriorityQueue
 
-class BeamSearchNode(object):
-    def __init__(self, hiddenstate, previousNode, wordId, logProb, length):
-        '''
-        :param hiddenstate:
-        :param previousNode:
-        :param wordId:
-        :param logProb:
-        :param length:
-        '''
-        self.h = hiddenstate
-        self.prevNode = previousNode
-        self.wordid = wordId
-        self.logp = logProb
-        self.leng = length
-
-    def eval(self, alpha=1.0):
-        reward = 0
-        # Add here a function for shaping a reward
-
-        return self.logp / float(self.leng - 1 + 1e-6) + alpha * reward
 
 class EncoderCNN(nn.Module):
     def __init__(self, embed_size):
@@ -45,19 +25,17 @@ class EncoderCNN(nn.Module):
 
         #features = features.reshape(features.size(0), -1)
         #features = self.bn(self.linear(features))
-        print(features.shape)
         features = self.netvlad(features)
-        print(features.shape)
         features = self.linear(features)
         return features
 
 
 class DecoderRNN(nn.Module):
-    def __init__(self, embed_size, hidden_size, vocab_size, max_seq_length=20):
+    def __init__(self, embed_size, hidden_size, vocab_size, embeddings,max_seq_length=20):
         """Set the hyper-parameters and build the layers."""
         super(DecoderRNN, self).__init__()
         self.hidden_size =  hidden_size
-        self.embed = nn.Embedding(vocab_size, embed_size)
+        self.embed = nn.Embedding.from_pretrained(torch.from_numpy(embeddings).float())
 
         self.lstm_cell = nn.LSTMCell(input_size=embed_size, hidden_size=hidden_size)
         self.linear = nn.Linear(hidden_size, vocab_size)
@@ -73,7 +51,7 @@ class DecoderRNN(nn.Module):
         cell_state = torch.zeros((batch_size, self.hidden_size)).cuda()
  
         outputs = torch.empty((batch_size, captions.size(1), self.vocab_size)).cuda()
-        #captions_embed = self.embed(captions)
+        captions_embed = self.embed(captions)
  
         for t in range(captions_embed.size(1)):
 
