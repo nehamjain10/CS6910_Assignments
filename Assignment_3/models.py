@@ -197,10 +197,9 @@ class DecoderRNN(nn.Module):
         batch_size = features.size(0)
         
         hidden_state = features
-        cell_state = torch.zeros((batch_size, self.hidden_size)).cuda()
         sampled_ids.append(2*torch.ones((batch_size)).long().cuda())
         for t in range(20):
-            hidden_state, cell_state = self.lstm_cell(self.embed(sampled_ids[-1]), (hidden_state, cell_state))            
+            hidden_state = self.rnn(self.embed(sampled_ids[-1]), hidden_state)            
             out = self.linear(hidden_state)
             _, predicted = out.max(1)  
             # build the output tensor

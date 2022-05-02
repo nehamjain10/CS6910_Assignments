@@ -15,7 +15,7 @@ hyperparameter_defaults = dict(
     learning_rate=3e-4,
     optimizer="adam",
     epochs=100,
-    hidden_size=128,
+    hidden_size=1024,
     cluster_size = 16,
 
     )
@@ -74,10 +74,10 @@ MAX_EPOCHS = 100
 
 hidden_size = config.hidden_size
 lr = config.learning_rate
+clusters = config.cluster_size
 
 
-
-encoder = EncoderCNN(hidden_size).to(device)
+encoder = EncoderCNN(hidden_size,clusters=clusters).to(device)
 
 if is_lstm:
     decoder = DecoderLSTM(embed_size, hidden_size, len(captions_vocab),embeddings).to(device)

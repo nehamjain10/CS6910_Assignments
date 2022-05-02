@@ -5,11 +5,11 @@ metric:
   name: val_loss
 parameters:
   hidden_size:
-    values: [32,128,256,512,1024]
+    values: [128,256,512,1024]
   learning_rate:
-    values: [0.003, 0.01, 0.0003]
+    values: [0.003, 0.0003]
   cluster_size:
-    values: [8,16,32,64]
+    values: [16,32,64]
   epochs:
     value: 100
 early_terminate:

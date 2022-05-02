@@ -9,14 +9,24 @@ from torchtext.data.utils import get_tokenizer
 from torch.nn.utils.rnn import pad_sequence
 from collections import Counter
 import numpy as np
-import re
 import wandb
+import argparse
+from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.multiprocessing as mp
+import torch.distributed as dist
+import os
 wandb.init(project="transformer_gujarati_english")
+def setup(rank, world_size):
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '12355'
+
+    # initialize the process group
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
 
 # %%
 gu_tokenizer = AutoTokenizer.from_pretrained('ai4bharat/indic-bert')
 model = AutoModel.from_pretrained('ai4bharat/indic-bert')
-# model = nn.DataParallel(model)
+
 # %%
 def build_en_vocab():
     counter = Counter()
@@ -181,7 +191,6 @@ encoder = Encoder(ENC_EMB_DIM,en_embeddings,ENC_HID_DIM)
 decoder = Decoder(DEC_EMB_DIM, DEC_HID_DIM)
 
 seq2seq = Seq2Seq(encoder, decoder)
-#seq2seq = nn.DataParallel(seq2seq)
 seq2seq = seq2seq.to(device)
 
 criterion = nn.CrossEntropyLoss(ignore_index=0)
@@ -276,7 +285,35 @@ test_loss = evaluate(test_iter, criterion)
 
 print(f'| Test Loss: {test_loss:.3f} | Test PPL: {math.exp(test_loss):7.3f} |')
 
+
+
+def main():
+    # Training settings
+    parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
+    parser.add_argument('--batch-size', type=int, default=150, metavar='N',
+                        help='input batch size for training (default: 64)')
+    parser.add_argument('--test-batch-size', type=int, default=128, metavar='N',
+                        help='input batch size for testing (default: 1000)')
+    parser.add_argument('--no-cuda', action='store_true', default=False,
+                        help='disables CUDA training')
+    parser.add_argument('--gpus', type=int, default=3, metavar='N',
+                        help='Number of GPUs')
+    parser.add_argument('--seed', type=int, default=1, metavar='S',
+                        help='random seed (default: 1)')
+
+    parser.add_argument('--save-model', action='store_true', default=False,
+                        help='For Saving the current Model')
+    args = parser.parse_args()
+    use_cuda = not args.no_cuda and torch.cuda.is_available()
+
+    world_size = args.gpus
+
+    if torch.cuda.device_count() > 1:
+      print("We have available ", torch.cuda.device_count(), "GPUs! but using ",world_size," GPUs")
+
+    #########################################################
+    mp.spawn(demo_basic, args=(world_size, args, use_cuda), nprocs=world_size, join=True)    
+
+
+
 # %%
-
-
-
