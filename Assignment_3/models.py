@@ -9,34 +9,40 @@ from queue import PriorityQueue
 
 
 class EncoderCNN(nn.Module):
-    def __init__(self, embed_size):
+    def __init__(self, embed_size,clusters=16):
         """Load the pretrained ResNet-152 and replace top fc layer."""
         super(EncoderCNN, self).__init__()
         resnet = models.resnet152(pretrained=True)
         modules = list(resnet.children())[:-2]      # delete the last fc layer.
         self.resnet = nn.Sequential(*modules)
-        self.linear = nn.Linear(131072, embed_size)
+        self.linear = nn.Linear(resnet.fc.in_features, embed_size)
+
         self.bn = nn.BatchNorm1d(embed_size, momentum=0.01)
-        self.netvlad = NetVLAD(64,2048)
+        self.netvlad = NetVLAD(clusters,2048)
+        self.linear = nn.Linear(2048*clusters, embed_size)
+
+        self.dropout = nn.Dropout(p=0.3)
+    
     def forward(self, images):
         """Extract feature vectors from input images."""
         with torch.no_grad():
             features = self.resnet(images)
 
-        #features = features.reshape(features.size(0), -1)
-        #features = self.bn(self.linear(features))
+        # features = features.reshape(features.size(0), -1)
+        # features = self.bn(self.linear(self.dropout(features)))
         features = self.netvlad(features)
-        features = self.linear(features)
+        features = self.bn(self.dropout(self.linear(features)))
         return features
 
 
-class DecoderRNN(nn.Module):
-    def __init__(self, embed_size, hidden_size, vocab_size, embeddings,max_seq_length=20):
+class DecoderLSTM(nn.Module):
+    def __init__(self, embed_size, hidden_size, vocab_size, embeddings,captions_vocab=None,max_seq_length=20):
         """Set the hyper-parameters and build the layers."""
-        super(DecoderRNN, self).__init__()
+        super(DecoderLSTM, self).__init__()
         self.hidden_size =  hidden_size
         self.embed = nn.Embedding.from_pretrained(torch.from_numpy(embeddings).float())
-
+        #self.embed = nn.Embedding(vocab_size, embed_size)
+        self.captions_vocab = captions_vocab
         self.lstm_cell = nn.LSTMCell(input_size=embed_size, hidden_size=hidden_size)
         self.linear = nn.Linear(hidden_size, vocab_size)
         self.max_seg_length = max_seq_length
@@ -79,45 +85,130 @@ class DecoderRNN(nn.Module):
         sampled_ids = torch.stack(sampled_ids, 1)
         return sampled_ids
 
-    # def beam_decode(self,features,k=5):
+    def beam_decode(self,features,k=5):
 
-    #     """Generate captions for given image features using beam search."""
+        """Generate captions for given image features using beam search."""
         
-    #     initial_probs = torch.ones((k))
-    #     initial_ids = 2*torch.ones((k,20)).long()
-    #     hidden_state = features
-    #     cell_state = torch.zeros((k, self.hidden_size)).cuda()
-    #     #sampled_ids.append(2*torch.ones((batch_size)).long().cuda())        
-    #     for t in range(20):
-    #         hidden_state, cell_state = self.lstm_cell(self.embed(initial_ids[:,t]), (hidden_state, cell_state))            
-    #         out = self.linear(hidden_state)
 
-    #         probs,indices = torch.topk(out,k,dim=1)
-            
-    #         if self.eos_token in indices:
-    #             break  
-    #         initial_probs = initial_probs*probs
-    #         initial_ids[:,t+1] = indices
-                
-    #     return sampled_ids
+        hidden_state = features.expand(k, self.hidden_size)
+        cell_state = torch.zeros((k, self.hidden_size)).cuda()
+         # Tensor to store top k previous words at each step; now they're just <start>
+        k_prev_words = torch.LongTensor([[self.captions_vocab['<bos>']]] * k).to("cuda")  # (k, 1)
 
+        # Tensor to store top k sequences; now they're just <start>
+        seqs = k_prev_words  # (k, 1)
 
-    # def sample(self, features, states=None):
-    #     """Generate captions for given image features using greedy search."""
-    #     sampled_ids = []
-    #     batch_size = features.size(0)
-    #     hiddens = torch.zeros((batch_size, self.hidden_size)).cuda()
-    #     states = torch.zeros((batch_size, self.hidden_size)).cuda()
-    #     for i in range(self.max_seg_length):
-    #         hiddens, states = self.lstm_cell(features, (hiddens,states))          # hiddens: (batch_size, 1, hidden_size)
-    #         outputs = self.linear(hiddens)            # outputs:  (batch_size, vocab_size)
-    #         print(outputs.shape)
-    #         _, predicted = outputs.max(1)                        # predicted: (batch_size)
-    #         sampled_ids.append(predicted)
-    #         features = self.embed(predicted)                       # inputs: (batch_size, embed_size)
+        # Tensor to store top k sequences' scores; now they're just 0
+        top_k_scores = torch.zeros(k, 1).to("cuda")  # (k, 1)
 
-    #     sampled_ids = torch.stack(sampled_ids, 1)                # sampled_ids: (batch_size, max_seq_length)
-    #     return sampled_ids
+        # Lists to store completed sequences and scores
+        complete_seqs = list()
+        complete_seqs_scores = list()
+
+        # Start decoding
+        step = 1
+
+        while True:
+
+            embeddings = self.embed(k_prev_words).squeeze(1)  # (s, embed_dim)
+            hidden_state, cell_state = self.lstm_cell(embeddings, (hidden_state, cell_state))
+            scores = F.log_softmax(scores, dim=1)
+
+            # Add
+            scores = top_k_scores.expand_as(scores) + scores  # (s, vocab_size)
+
+            # For the first step, all k points will have the same scores (since same k previous words, h, c)
+            if step == 1:
+                top_k_scores, top_k_words = scores[0].topk(k, 0, True, True)  # (s)
+            else:
+                # Unroll and find top scores, and their unrolled indices
+                top_k_scores, top_k_words = scores.view(-1).topk(k, 0, True, True)  # (s)
+
+            # Convert unrolled indices to actual indices of scores
+            prev_word_inds = top_k_words / len(self.captions_vocab)  # (s)
+            next_word_inds = top_k_words % len(self.captions_vocab)  # (s)
+
+            # Add new words to sequences
+            seqs = torch.cat([seqs[prev_word_inds], next_word_inds.unsqueeze(1)], dim=1)  # (s, step+1)
+
+            # Which sequences are incomplete (didn't reach <end>)?
+            incomplete_inds = [ind for ind, next_word in enumerate(next_word_inds) if next_word != self.captions_vocab['<eos>']]
+            complete_inds = list(set(range(len(next_word_inds))) - set(incomplete_inds))
+
+            # Set aside complete sequences
+            if len(complete_inds) > 0:
+                complete_seqs.extend(seqs[complete_inds].tolist())
+                complete_seqs_scores.extend(top_k_scores[complete_inds])
+            k -= len(complete_inds)  # reduce beam length accordingly
+
+            # Proceed with incomplete sequences
+            if k == 0:
+                break
+            seqs = seqs[incomplete_inds]
+            h = h[prev_word_inds[incomplete_inds]]
+            c = c[prev_word_inds[incomplete_inds]]
+            encoder_out = encoder_out[prev_word_inds[incomplete_inds]]
+            top_k_scores = top_k_scores[incomplete_inds].unsqueeze(1)
+            k_prev_words = next_word_inds[incomplete_inds].unsqueeze(1)
+
+            # Break if things have been going on too long
+            if step > 50:
+                break
+            step += 1
+
+        i = complete_seqs_scores.index(max(complete_seqs_scores))
+        seq = complete_seqs[i]
+        
+        return seq
+
+class DecoderRNN(nn.Module):
+    def __init__(self, embed_size, hidden_size, vocab_size, embeddings,max_seq_length=20):
+        """Set the hyper-parameters and build the layers."""
+        super(DecoderRNN, self).__init__()
+        self.hidden_size =  hidden_size
+        self.embed = nn.Embedding.from_pretrained(torch.from_numpy(embeddings).float())
+
+        self.rnn = nn.RNNCell(input_size=embed_size, hidden_size=hidden_size)
+        self.linear = nn.Linear(hidden_size, vocab_size)
+        self.max_seg_length = max_seq_length
+        self.vocab_size = vocab_size
+        
+    def forward(self, features, captions,captions_embed=None):
+        """Decode image feature vectors and generates captions."""
+
+        batch_size = features.size(0)
+        
+        hidden_state = features
+ 
+        outputs = torch.empty((batch_size, captions.size(1), self.vocab_size)).cuda()
+        captions_embed = self.embed(captions)
+ 
+        for t in range(captions_embed.size(1)):
+
+            hidden_state = self.rnn(captions_embed[:, t, :],hidden_state)            
+            out = self.linear(hidden_state)
+            outputs[:, t, :] = out
+    
+        return outputs
+    
+    def greedy_sample(self, features):
+        """Generate captions for given image features using greedy search."""
+        sampled_ids = []
+        batch_size = features.size(0)
+        
+        hidden_state = features
+        cell_state = torch.zeros((batch_size, self.hidden_size)).cuda()
+        sampled_ids.append(2*torch.ones((batch_size)).long().cuda())
+        for t in range(20):
+            hidden_state, cell_state = self.lstm_cell(self.embed(sampled_ids[-1]), (hidden_state, cell_state))            
+            out = self.linear(hidden_state)
+            _, predicted = out.max(1)  
+            # build the output tensor
+            sampled_ids.append(predicted)
+        
+        sampled_ids = torch.stack(sampled_ids, 1)
+        return sampled_ids
+
 
 class NetVLAD(nn.Module):
     """NetVLAD layer implementation"""

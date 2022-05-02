@@ -6,3 +6,6 @@ Assignment_2/data/*
 *.pt
 *.txt
 Assignment_3/wandb/*
+*.obj
+*.en
+*.gu

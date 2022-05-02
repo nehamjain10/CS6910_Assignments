@@ -100,7 +100,7 @@ class ImageCaption(Dataset):
 class ImageCaptionTest(Dataset):
     """Animal Dataset"""
 
-    def __init__(self,image_file,caption_file,transforms=None,type="val"):
+    def __init__(self,image_file,caption_file,captions_vocab,transforms=None,type="val"):
         """
         Args:
             root_dir (string): Directory with all the images.
@@ -109,7 +109,9 @@ class ImageCaptionTest(Dataset):
         """
         self.transform  = transforms
         self.max_length = 20
-        
+        self.captions_vocab = captions_vocab
+        self.en_tokenizer = get_tokenizer('spacy', language='en_core_web_sm')
+
         with open(image_file) as f:
             self.image_files = f.readlines()
 
@@ -147,8 +149,13 @@ class ImageCaptionTest(Dataset):
         image_name = self.image_files[idx].split('/')[-1]
 
         caption = self.image_to_caption[image_name]            
+        
+        tokens = []
+        for  i in caption:
+            tokens.append(self.en_tokenizer(i))
 
+        #print(caption)
         if self.transform:
             image = self.transform(image)
         
-        return image,caption
+        return image,tokens
