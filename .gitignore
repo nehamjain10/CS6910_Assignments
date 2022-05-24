@@ -9,3 +9,6 @@ Assignment_3/wandb/*
 *.obj
 *.en
 *.gu
+Assignment_4/wandb/*
+*.json
+*.zip
